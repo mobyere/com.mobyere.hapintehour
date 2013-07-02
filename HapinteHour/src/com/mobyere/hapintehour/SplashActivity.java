@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.Toast;
+import com.hapintehour.R;
 
 public class SplashActivity extends Activity implements LocationListener {
 

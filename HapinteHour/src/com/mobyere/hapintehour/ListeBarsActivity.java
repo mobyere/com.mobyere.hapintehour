@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.hapintehour.R;
 
 public class ListeBarsActivity extends Activity implements LocationListener {
 	private ListView listViewBars;
