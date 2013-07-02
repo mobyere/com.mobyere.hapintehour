@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+		
+		<RelativeLayout
+		    android:id="@+id/id_relativeBandeau"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:background="#73618B" >
+
+		    <!-- Image bar -->
+		    <LinearLayout
+		        android:id="@+id/id_thumbnailDetail"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_alignParentLeft="true"
+		    	android:padding="5dp" >
+			    <ImageView
+			        android:id="@+id/imgBarDetail"
+			        android:layout_width="110dp"
+			        android:layout_height="110dp"
+			        android:layout_gravity="center_vertical"
+			        android:contentDescription="@string/contentDescription"
+			        android:scaleType="fitXY"
+			        android:src="@drawable/ic_bar_defaut" />
+			</LinearLayout>
+			
+		    <!-- Infos bar -->
+		   	<com.mobyere.hapintehour.AutoResizeTextView
+		   	    android:id="@+id/txtNomBarDetail"
+		   	    android:layout_width="wrap_content"
+		   	    android:layout_height="wrap_content"
+		   	    android:textStyle="bold"
+		   	    android:textSize="23sp"
+		   	    android:textColor="#ffffff"
+		   	    android:layout_alignTop="@id/id_thumbnailDetail"
+		   	    android:layout_toRightOf="@id/id_thumbnailDetail"
+		   	    android:layout_marginLeft="2dp" />
+		   
+		   	<TextView
+			    android:id="@+id/txtRueBarDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/txtNomBarDetail"
+			    android:layout_toRightOf="@id/id_thumbnailDetail"
+			    android:paddingLeft="3dp"
+			    android:textColor="#ffffff"
+		   	    android:textSize="18sp" />
+		   	
+		   	<TextView
+			    android:id="@+id/txtCodePostalBarDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/txtRueBarDetail"
+			    android:layout_toRightOf="@id/id_thumbnailDetail"
+			    android:paddingLeft="3dp"
+			    android:textColor="#ffffff"
+		   	    android:textSize="18sp" />
+		   	
+		   	<TextView
+			    android:id="@+id/txtVilleBarDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/txtRueBarDetail"
+			    android:layout_toRightOf="@id/txtCodePostalBarDetail"
+			    android:paddingLeft="3dp"
+			    android:textColor="#ffffff"
+		   	    android:textSize="18sp" />
+		   	 
+		   	<ImageView
+		   	    android:id="@+id/imgTelephoneDetail"
+		   	    android:layout_width="25dp"
+		   	    android:layout_height="25dp"
+		   	    android:layout_below="@id/txtCodePostalBarDetail"
+		   	    android:layout_marginTop="5dp"
+		   	    android:layout_toRightOf="@id/id_thumbnailDetail"
+		   	    android:contentDescription="@string/contentDescription"
+		   	    android:src="@drawable/ic_telephone_blanc" />
+			    
+			<TextView
+			    android:id="@+id/txtTelephoneBar"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/txtCodePostalBarDetail"
+			    android:layout_toRightOf="@id/imgTelephoneDetail"
+			    android:layout_alignTop="@id/imgTelephoneDetail"
+			    android:text="@string/nonRenseigne"
+			    android:textColor="#ffffff"
+		   	    android:textSize="18sp"
+			    android:layout_marginTop="1dp"
+			    android:clickable="true" />
+		</RelativeLayout>
+		
+		<RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@id/id_relativeBandeau"
+		    android:padding="5dp" >
+			
+			<!-- Cadres avec prix bières et vins -->
+			<TextView
+			    android:id="@+id/cadreCentre"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_centerHorizontal="true"
+			     />
+			
+			<ImageView
+			    android:id="@+id/imgCadreBiereDetail"
+			    android:layout_width="150dp"
+			    android:layout_height="60dp"
+			    android:layout_alignRight="@id/cadreCentre"
+			    android:contentDescription="@string/contentDescription"
+			    android:src="@drawable/cadre_transparent"
+			    android:scaleType="fitXY"
+			    android:layout_marginTop="5dp" />
+			
+			<ImageView
+			    android:id="@+id/imgBiereDetail"
+			    android:layout_width="40dp"
+			    android:layout_height="40dp"
+			    android:src="@drawable/ic_beer_couleur"
+			    android:contentDescription="@string/contentDescription"
+			    android:layout_alignLeft="@id/imgCadreBiereDetail"
+			    android:layout_marginLeft="3dp"
+			    android:layout_marginTop="14dp"
+			    android:scaleType="fitCenter" />
+			
+			<TextView
+			    android:id="@+id/txtPrixBiereHHDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_toRightOf="@id/imgBiereDetail"
+			    android:layout_marginTop="7dp"
+			    android:textIsSelectable="false"
+			    android:textSize="40sp" />
+			    
+			<TextView
+			    android:id="@+id/txtEuroBiereHHDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignTop="@id/txtPrixBiereHHDetail"
+			    android:layout_toRightOf="@id/txtPrixBiereHHDetail"
+			    android:text="@string/euro"
+			    android:textSize="40sp" />
+			
+			<TextView
+			    android:id="@+id/txtPrixBiereHNDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBaseline="@id/txtEuroBiereHHDetail"
+			    android:layout_toRightOf="@id/txtEuroBiereHHDetail"
+			    android:layout_marginLeft="3dp"
+			    android:textColor="@color/common_signin_btn_light_text_disabled"
+			    android:textIsSelectable="false"
+			    android:textSize="20sp" />
+			    
+			<TextView
+			    android:id="@+id/txtEuroBiereHNDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBaseline="@id/txtPrixBiereHNDetail"
+			    android:layout_toRightOf="@id/txtPrixBiereHNDetail"
+			    android:text="@string/euro"
+			    android:textColor="@color/common_signin_btn_light_text_disabled"
+			    android:textSize="20sp" />
+			
+			<ImageView
+			    android:id="@+id/imgCadreVinDetail"
+			    android:layout_width="150dp"
+			    android:layout_height="60dp"
+			    android:layout_toRightOf="@id/imgCadreBiereDetail"
+			    android:layout_alignTop="@id/imgCadreBiereDetail"
+			    android:contentDescription="@string/contentDescription"
+			    android:src="@drawable/cadre_transparent"
+			    android:scaleType="fitXY"
+			    android:layout_marginLeft="5dp" />
+			
+			<ImageView
+			    android:id="@+id/imgVinDetail"
+			    android:layout_width="40dp"
+			    android:layout_height="40dp"
+			    android:src="@drawable/ic_wine_couleur"
+			    android:contentDescription="@string/contentDescription"
+			    android:layout_alignTop="@id/imgBiereDetail"
+			    android:layout_alignLeft="@id/imgCadreVinDetail"
+			    android:scaleType="fitCenter" />
+			
+			<TextView
+			    android:id="@+id/txtPrixVinHHDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBaseline="@id/txtPrixBiereHHDetail"
+			    android:layout_toRightOf="@id/imgVinDetail"
+			    android:layout_marginLeft="2dp"
+			    android:layout_marginTop="7dp"
+			    android:textIsSelectable="false"
+			    android:textSize="40sp" />
+			    
+			<TextView
+			    android:id="@+id/txtEuroVinHHDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBaseline="@id/txtPrixVinHHDetail"
+			    android:layout_toRightOf="@id/txtPrixVinHHDetail"
+			    android:text="@string/euro"
+			    android:textSize="40sp" />
+			
+			<TextView
+			    android:id="@+id/txtPrixVinHNDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBaseline="@id/txtPrixVinHHDetail"
+			    android:layout_toRightOf="@id/txtEuroVinHHDetail"
+			    android:layout_marginLeft="3dp"
+			    android:textColor="@color/common_signin_btn_light_text_disabled"
+			    android:textIsSelectable="false"
+			    android:textSize="20sp" />
+			    
+			<TextView
+			    android:id="@+id/txtEuroVinHNDetail"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignBaseline="@id/txtPrixVinHNDetail"
+			    android:layout_toRightOf="@id/txtPrixVinHNDetail"
+			    android:text="@string/euro"
+			    android:textColor="@color/common_signin_btn_light_text_disabled"
+			    android:textSize="20sp" />
+			
+			<!-- Details/Remarques -->
+			<RelativeLayout
+		        android:id="@+id/id_relativeDetailsDetail"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_alignParentLeft="true"
+		    	android:layout_below="@id/imgCadreBiereDetail"
+		    	android:layout_marginTop="15dp" >
+			    
+			    <TextView
+				    android:id="@+id/txtTitreDetails"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentTop="true"
+				    android:layout_alignParentLeft="true"
+				    android:text="@string/details"
+				    android:layout_marginLeft="10dp"
+				    android:textStyle="bold"
+				    android:textSize="25sp"
+				    android:visibility="gone" />
+				
+				<TextView
+				    android:id="@+id/txtDetails"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtTitreDetails"
+				    android:layout_marginBottom="2dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:visibility="gone" />
+				
+				<ImageView
+				    android:id="@+id/imgCadreDetailsDetail"
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:layout_alignBottom="@+id/txtDetails"
+				    android:layout_marginLeft="5dp"
+				    android:contentDescription="@string/contentDescription"
+				    android:scaleType="fitXY"
+				    android:src="@drawable/cadre_transparent"
+				    android:visibility="gone" />
+				
+			</RelativeLayout>
+			<!-- Horaires des HH -->
+			<RelativeLayout
+		        android:id="@+id/id_relativeHHDetail"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_alignParentLeft="true"
+		    	android:layout_below="@id/id_relativeDetailsDetail"
+		    	android:layout_marginTop="15dp" >
+				
+				<TextView
+				    android:id="@+id/txtHappyHour"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_alignParentTop="true"
+				    android:layout_alignParentLeft="true"
+				    android:text="@string/happyHour"
+				    android:layout_marginLeft="10dp"
+				    android:textStyle="bold"
+				    android:textSize="25sp" />
+				
+				<TextView
+				    android:id="@+id/txtLundi"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHappyHour"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/lundi" />
+				
+				<TextView
+				    android:id="@+id/txtHHLundi"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHappyHour"
+				    android:layout_toRightOf="@id/txtLundi"
+				    android:layout_marginTop="5dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<TextView
+				    android:id="@+id/txtMardi"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtLundi"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/mardi" />
+				
+				<TextView
+				    android:id="@+id/txtHHMardi"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHLundi"
+				    android:layout_toRightOf="@id/txtMardi"
+				    android:layout_marginTop="5dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<TextView
+				    android:id="@+id/txtMercredi"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHMardi"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/mercredi" />
+				
+				<TextView
+				    android:id="@+id/txtHHMercredi"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHMardi"
+				    android:layout_toRightOf="@id/txtMercredi"
+				    android:layout_marginTop="5dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<TextView
+				    android:id="@+id/txtJeudi"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHMercredi"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/jeudi" />
+				
+				<TextView
+				    android:id="@+id/txtHHJeudi"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtMercredi"
+				    android:layout_toRightOf="@id/txtJeudi"
+				    android:layout_marginTop="5dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<TextView
+				    android:id="@+id/txtVendredi"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtJeudi"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/vendredi" />
+				
+				<TextView
+				    android:id="@+id/txtHHVendredi"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHJeudi"
+				    android:layout_toRightOf="@id/txtVendredi"
+				    android:layout_marginTop="5dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<TextView
+				    android:id="@+id/txtSamedi"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtVendredi"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginLeft="20dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/samedi" />
+				
+				<TextView
+				    android:id="@+id/txtHHSamedi"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHVendredi"
+				    android:layout_toRightOf="@id/txtSamedi"
+				    android:layout_marginTop="5dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<TextView
+				    android:id="@+id/txtDimanche"
+				    android:layout_width="80dp"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtSamedi"
+				    android:layout_marginLeft="20dp"
+				    android:layout_marginTop="5dp"
+				    android:text="@string/dimanche"
+				    android:textIsSelectable="true"
+				    android:textSize="15sp" />
+				
+				<TextView
+				    android:id="@+id/txtHHDimanche"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:layout_below="@id/txtHHSamedi"
+				    android:layout_toRightOf="@id/txtDimanche"
+				    android:layout_marginTop="5dp"
+				    android:layout_marginBottom="2dp"
+				    android:textSize="15sp"
+				    android:textIsSelectable="true"
+				    android:text="@string/pasDeHH" />
+				
+				<ImageView
+				    android:id="@+id/imgCadreHHDetail"
+				    android:layout_width="match_parent"
+				    android:layout_height="match_parent"
+				    android:layout_alignBottom="@+id/txtDimanche"
+				    android:layout_alignTop="@id/imgCadreHHDetail"
+				    android:layout_marginLeft="5dp"
+				    android:contentDescription="@string/contentDescription"
+				    android:scaleType="fitXY"
+				    android:src="@drawable/cadre_transparent" />
+			</RelativeLayout>
+	
+		</RelativeLayout>
+	</RelativeLayout>
+</ScrollView>

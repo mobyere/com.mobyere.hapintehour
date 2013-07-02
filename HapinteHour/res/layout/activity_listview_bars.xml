@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+ 
+    <LinearLayout
+        android:id="@+id/id_thumbnail"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentLeft="true"
+    	android:padding="5dp" >
+	    <ImageView
+	        android:id="@+id/imgBar"
+	        android:layout_width="80dp"
+	        android:layout_height="80dp"
+	        android:layout_gravity="center_vertical"
+	        android:contentDescription="@string/contentDescription"
+	        android:scaleType="fitXY"
+	        android:src="@drawable/ic_bar_defaut" />
+	</LinearLayout>
+	
+   	<com.mobyere.hapintehour.AutoResizeTextView
+   	    android:id="@+id/txtNomBar"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:textStyle="bold"
+   	    android:textSize="23sp"
+   	    android:textColor="#73618B"
+   	    android:layout_alignTop="@id/id_thumbnail"
+   	    android:layout_toRightOf="@id/id_thumbnail"
+   	    android:layout_marginLeft="2dp" />
+   	
+	<ImageView
+	    android:id="@+id/imgBiere"
+	    android:layout_width="32dp"
+	    android:layout_height="32dp"
+	    android:paddingLeft="5dp"
+	    android:paddingRight="5dp"
+	    android:src="@drawable/ic_beer_couleur"
+	    android:contentDescription="@string/contentDescription"
+	    android:layout_below="@id/txtNomBar"
+	    android:layout_toRightOf="@id/id_thumbnail" />
+	
+	<TextView
+	    android:id="@+id/txtPrixBiere"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textIsSelectable="false"
+	    android:textSize="20sp"
+	    android:paddingTop="1dp"
+	    android:layout_toRightOf="@id/imgBiere"
+	    android:layout_below="@id/txtNomBar" />
+	    
+	<TextView 
+	    android:id="@+id/txtEuroBiere"
+	    android:text="@string/euro"
+	    android:textSize="20sp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@id/txtPrixBiere"
+	    android:layout_below="@id/txtNomBar"
+	    android:paddingTop="1dp" />
+	
+    <!-- <ImageView
+        android:id="@+id/imgVin"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_wine_nb"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:contentDescription="@string/contentDescription"
+        android:layout_toRightOf="@id/txtEuroBiere"
+        android:layout_below="@id/txtNomBar" />
+	
+	<TextView 
+	    android:id="@+id/txtPrixVin"
+       	android:layout_width="wrap_content"
+       	android:layout_height="wrap_content"
+       	android:textIsSelectable="false"
+       	android:textSize="20sp"
+       	android:layout_toRightOf="@id/imgVin"
+       	android:layout_below="@id/txtNomBar"
+       	android:paddingTop="1dp" />
+	
+	<TextView 
+	    android:id="@+id/txtEuroVin"
+	    android:text="@string/euro"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="20sp"
+	    android:layout_toRightOf="@id/txtPrixVin"
+	    android:layout_below="@id/txtNomBar"
+	    android:paddingTop="1dp" />
+	 -->
+	<ImageView
+        android:id="@+id/imgHorloge"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_horloge"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:contentDescription="@string/contentDescription"
+        android:layout_toRightOf="@id/txtEuroBiere"
+        android:layout_below="@id/txtNomBar" />
+	
+	<TextView 
+	    android:id="@+id/txtHeureDebut"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="20sp"
+	    android:textIsSelectable="false"
+	    android:layout_toRightOf="@id/imgHorloge"
+	    android:layout_below="@id/txtNomBar"
+	    android:paddingTop="1dp" />
+	
+	<TextView 
+	    android:id="@+id/txtTiretHeure"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="20sp"
+	    android:textIsSelectable="false"
+	    android:layout_toRightOf="@id/txtHeureDebut"
+	    android:layout_below="@id/txtNomBar"
+	    android:paddingTop="1dp"
+	    android:layout_marginLeft="3dp"
+	    android:layout_marginRight="3dp"
+	    android:text="@string/tiret" />
+	
+	<TextView 
+	    android:id="@+id/txtHeureFin"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textSize="20sp"
+	    android:textIsSelectable="false"
+	    android:layout_toRightOf="@id/txtTiretHeure"
+	    android:layout_below="@id/txtNomBar"
+	    android:paddingTop="1dp" />
+
+	<TextView 
+   	    android:id="@+id/txtA"
+   	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/a"
+        android:layout_toRightOf="@id/id_thumbnail"
+        android:layout_below="@id/imgBiere" />
+   	
+   	<TextView 
+        android:id="@+id/txtDistanceBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textIsSelectable="false"
+        android:layout_toRightOf="@id/txtA"
+        android:layout_below="@id/imgBiere" />
+   	
+   	<TextView 
+   	    android:id="@+id/txtmKm"
+   	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingLeft="5dp"
+        android:text="@string/m"
+        android:layout_toRightOf="@id/txtDistanceBar"
+        android:layout_below="@id/imgBiere" />
+   	
+   	<TextView 
+   	    android:id="@+id/txtenCours"
+   	    android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#CC0000"
+        android:textStyle="bold"
+        android:paddingLeft="5dp"
+        android:text="@string/enCours"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/imgBiere"
+        android:layout_marginRight="5dp" />
+   	
+   	<ImageView
+   	    android:layout_width="18dp"
+   	    android:layout_height="18dp"
+   	    android:layout_alignParentRight="true"
+   	    android:layout_centerVertical="true"
+   	    android:contentDescription="@string/contentDescription"
+   	    android:src="@drawable/ic_arrow" />
+
+ </RelativeLayout>

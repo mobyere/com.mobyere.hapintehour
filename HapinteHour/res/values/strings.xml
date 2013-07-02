@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Hapinte Hour</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_maps">Localisation</string>
+    <string name="action_navigation">Itinéraire</string>
+    <string name="rafraichir">Rafraîchir</string>
+    <string name="trierPar">Trier par\u002e\u002e\u002e</string>
+    <string name="proposerBar">Proposer un bar</string>
+    <string name="signalerErreur">Signaler une erreur</string>
+    <string name="tiret">-</string>
+    <string name="euro">€</string>
+    <string name="contentDescription">Image</string>
+    <string name="a">à</string>
+    <string name="m">m</string>
+    <string name="details">Détails</string>
+    <string name="listeVide">Aucun Happy Hour de disponible aujourd\'hui :(</string>
+    <string name="title_activity_details_bar">DetailsBarActivity</string>
+    <string name="nonRenseigne">Non renseigné</string>
+    <string name="enCours">En cours !!!</string>
+    <string name="nomDuBar">Bar</string>
+    <string name="happyHour"><u>Happy Hours</u></string>
+    <string name="valider">Valider</string>
+    <string name="lundi"><b>Lundi : </b></string>
+    <string name="mardi"><b>Mardi : </b></string>
+    <string name="mercredi"><b>Mercredi : </b></string>
+    <string name="jeudi"><b>Jeudi : </b></string>
+    <string name="vendredi"><b>Vendredi : </b></string>
+    <string name="samedi"><b>Samedi : </b></string>
+    <string name="dimanche"><b>Dimanche : </b></string>
+    <string name="pasDeHH">Pas d\'Happy Hour ce jour là :(</string>
+    <string name="heuresHH">de <b>%1$s</b> à <b>%2$s</b></string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_test_map">TestMapActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_prop_erreur">PropErreurActivity</string>
+
+</resources>
