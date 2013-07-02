@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.hapintehour.R;
+import com.mobyere.hapintehour.R;
  
 public class LazyAdapter extends BaseAdapter {
  

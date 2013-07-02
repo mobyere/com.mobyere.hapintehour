@@ -19,7 +19,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
-import com.hapintehour.R;
+import com.mobyere.hapintehour.R;
  
 public class ImageLoader {
  

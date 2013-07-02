@@ -20,7 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.hapintehour.R;
+import com.mobyere.hapintehour.R;
 
 public class DetailsBarActivity extends Activity {
 	private ImageView imgBarDetail;

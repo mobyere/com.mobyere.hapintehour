@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.hapintehour.R;
+import com.mobyere.hapintehour.R;
 
 public class PropErreurActivity extends Activity {
 
