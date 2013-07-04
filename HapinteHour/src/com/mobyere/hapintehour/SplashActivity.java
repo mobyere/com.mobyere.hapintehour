@@ -9,9 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.widget.Toast;
-import com.mobyere.hapintehour.R;
 
 public class SplashActivity extends Activity implements LocationListener {
 
@@ -52,8 +50,7 @@ public class SplashActivity extends Activity implements LocationListener {
 				return "ExceptionServer";
 			}			
 			// Alimentation de la liste à partir du serveur
-			Utils.setListeBarsHH(Utils.alimentationListeBars(strReponse, SplashActivity.this, 
-					location));
+			Utils.alimentationListeBars(strReponse, SplashActivity.this, location);
 	        return null;
 		}
 		
@@ -66,7 +63,7 @@ public class SplashActivity extends Activity implements LocationListener {
 			} else {
 				// On fait passer la liste des bars à l'écran suivant
 				Intent intent = new Intent(SplashActivity.this, ListeBarsActivity.class);
-				intent.putExtra("listeBars", (Parcelable) Utils.getListeBarsHH());
+				//intent.putExtra("listeBars", (Parcelable) Utils.getListeBarsHH());
 		    	startActivity(intent);
 			}
 		}

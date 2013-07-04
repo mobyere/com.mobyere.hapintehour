@@ -3,7 +3,8 @@
     <item
         android:id="@+id/action_onlyHH"
         android:showAsAction="always"
-        android:title="@string/onlyHH" />
+        android:title="@string/tousLesBars"
+        android:icon="@drawable/ic_action_bars_hh" />
         
     <item 
         android:id="@+id/action_tri"

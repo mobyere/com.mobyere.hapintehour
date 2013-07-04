@@ -9,7 +9,7 @@
     <string name="trierPar">Trier par\u002e\u002e\u002e</string>
     <string name="proposerBar">Proposer un bar</string>
     <string name="signalerErreur">Signaler une erreur</string>
-    <string name="onlyHH">N\'afficher que les bars en Happy Hour</string>
+    <string name="barsHH">N\'afficher que les bars en Happy Hour</string>
     <string name="tousLesBars">Afficher tous les bars</string>
     <string name="tiret">-</string>
     <string name="euro">€</string>

@@ -22,6 +22,7 @@ public class Bar implements Parcelable {
 	private double barLatitude;
 	private double barLongitude;
 	private boolean isBarHH;
+	private boolean isBarHHAujourdhui;
 	private boolean isBarHHLundi;
 	private boolean isBarHHMardi;
 	private boolean isBarHHMercredi;
@@ -92,6 +93,7 @@ public class Bar implements Parcelable {
 		dest.writeDouble(barLatitude);
 		dest.writeDouble(barLongitude);
 		dest.writeInt(isBarHH ? 0 : 1);
+		dest.writeInt(isBarHHAujourdhui ? 0 : 1);
 		dest.writeInt(isBarHHLundi ? 0 : 1);
 		dest.writeInt(isBarHHMardi ? 0 : 1);
 		dest.writeInt(isBarHHMercredi ? 0 : 1);
@@ -134,6 +136,7 @@ public class Bar implements Parcelable {
 		this.setBarLatitude(in.readDouble());
 		this.setBarLongitude(in.readDouble());
 		this.setBarHH(in.readInt() == 0);
+		this.setBarHHAujourdhui(in.readInt() == 0);
 		this.setBarHHLundi(in.readInt() == 0);
 		this.setBarHHMardi(in.readInt() == 0);
 		this.setBarHHMercredi(in.readInt() == 0);
@@ -273,6 +276,14 @@ public class Bar implements Parcelable {
 
 	public void setBarHH(boolean isBarHH) {
 		this.isBarHH = isBarHH;
+	}
+
+	public boolean isBarHHAujourdhui() {
+		return isBarHHAujourdhui;
+	}
+
+	public void setBarHHAujourdhui(boolean isBarHHAujourdhui) {
+		this.isBarHHAujourdhui = isBarHHAujourdhui;
 	}
 
 	public boolean isBarHHLundi() {

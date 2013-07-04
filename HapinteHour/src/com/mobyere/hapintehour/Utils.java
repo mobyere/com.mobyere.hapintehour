@@ -35,14 +35,15 @@ public class Utils {
 	
 	//private static final String strURL = "http://192.168.2.103/";
 	private static final String strURL = "http://hapintehour.olympe.in/";
-	private static BarList listeBarsHH;
-	private static BarList listeTousBars = new BarList();
+	private static BarList listeTousBars; // Liste de tous les bars
+	private static BarList listeBarsHH;   // Liste des bars affichés (liste de travail)
 	private static final String ACTIVITY_PROPO_BAR = "PropositionBar";
 	private static final String ACTIVITY_SIGNAL_ERREUR = "SignalErreur";
 	private static final String ACTIVITY_LISTE_BARS = "listeBars";
 	private static final String ACTIVITY_DETAILS_BAR = "detailsBar";
-	private static boolean isOnlyHH = false;
-	
+	private static boolean onlyHH = true; // si vrai, on n'affiche que les bars en HH
+	private static int itemTriSelectionne = 0; // parametre de tri
+    
     public static void CopyStream(InputStream is, OutputStream os)
     {
         final int buffer_size=1024;
@@ -97,7 +98,6 @@ public class Utils {
 	        rd.close();
 
 	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
 	    String contentOfMyInputStream = sb.toString();
@@ -153,9 +153,10 @@ public class Utils {
 	
 	// Fonction qui alimente la liste des bars à partir du serveur
 	// Retourne la liste triée (bars en HH triés par distance)
-	public static BarList alimentationListeBars(String strReponse, Context context, 
+	public static void alimentationListeBars(String strReponse, Context context, 
 			Location location) {
-		BarList listeBarsHH = new BarList();
+		listeTousBars = new BarList();
+		listeBarsHH = new BarList();
 		
 		Bar bar = null;
         URL aURL;
@@ -190,6 +191,7 @@ public class Utils {
 						bar.getBarLongitude()));
 				bar.setBarHH(Utils.estHHActuellement(bar.getBarHeureDebutHH(), 
 						bar.getBarHeureFinHH()));
+				bar.setBarHHAujourdhui(json_data.getInt("bar_isHH") == 1);
 				bar.setBarHHLundi(json_data.getInt("bar_HHLundi") == 1);
 				bar.setBarHHMardi(json_data.getInt("bar_HHMardi") == 1);
 				bar.setBarHHMercredi(json_data.getInt("bar_HHMercredi") == 1);
@@ -212,8 +214,12 @@ public class Utils {
 				bar.setBarFinHHSamedi(json_data.getString("bar_HeureFinHHSamedi"));
 				bar.setBarFinHHDimanche(json_data.getString("bar_HeureFinHHDimanche"));
 				bar.setBarDetails(json_data.getString("bar_Details"));
-				
-				listeBarsHH.add(bar);
+				// On rajoute le bar dans la liste de tous les bars
+				listeTousBars.add(bar);
+				// Si le bar est en HH aujourd'hui, on le rajoute dans la liste des bars en HH
+				if (json_data.getInt("bar_isHH") == 1) {
+					listeBarsHH.add(bar);
+				}
 	        }
 	    } catch(JSONException e){
 	    	 Log.i("tagjsonexp",""+e.toString());
@@ -224,7 +230,7 @@ public class Utils {
 	    }
         // Tri des bars par distance
         Collections.sort(listeBarsHH, new BarComparator());
-		return listeBarsHH;
+		//return null;
 	}
 
 	public static String getStrURL() {
@@ -264,11 +270,19 @@ public class Utils {
 	}
 
 	public static boolean isOnlyHH() {
-		return isOnlyHH;
+		return onlyHH;
 	}
 
-	public static void setOnlyHH(boolean isOnlyHH) {
-		Utils.isOnlyHH = isOnlyHH;
+	public static void setOnlyHH(boolean onlyHH) {
+		Utils.onlyHH = onlyHH;
+	}
+
+	public static int getItemTriSelectionne() {
+		return itemTriSelectionne;
+	}
+
+	public static void setItemTriSelectionne(int itemTriSelectionne) {
+		Utils.itemTriSelectionne = itemTriSelectionne;
 	}
 
 }

@@ -64,6 +64,7 @@ class BarList extends ArrayList<Bar> implements Parcelable
     		dest.writeDouble(bar.getBarLatitude());
     		dest.writeDouble(bar.getBarLongitude());
     		dest.writeInt(bar.isBarHH() ? 0 : 1);
+    		dest.writeInt(bar.isBarHHAujourdhui() ? 0 : 1);
     		dest.writeInt(bar.isBarHHLundi() ? 0 : 1);
     		dest.writeInt(bar.isBarHHMardi() ? 0 : 1);
     		dest.writeInt(bar.isBarHHMercredi() ? 0 : 1);
@@ -118,6 +119,7 @@ class BarList extends ArrayList<Bar> implements Parcelable
             bar.setBarLatitude(in.readDouble());
             bar.setBarLongitude(in.readDouble());
             bar.setBarHH(in.readInt() == 0);
+            bar.setBarHHAujourdhui(in.readInt() == 0);
             bar.setBarHHLundi(in.readInt() == 0);
             bar.setBarHHMardi(in.readInt() == 0);
             bar.setBarHHMercredi(in.readInt() == 0);

@@ -2,7 +2,6 @@ package com.mobyere.hapintehour;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -32,7 +31,6 @@ public class ListeBarsActivity extends Activity implements LocationListener {
     private String provider;
     private TextView txtListeVide;
     private AlertDialog dialogueTri;
-    private int itemTriSelectionne = 0;
     private Intent intent;
         
 	@Override
@@ -81,31 +79,29 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	  public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.action_onlyHH:
+	    	// Affichage des bars : Tous ou que les HH
 	    	Resources resources = getResources();
-	    	if (!Utils.isOnlyHH()) {
-	    		// On n'affiche que les bars en HH
-	    		Utils.setOnlyHH(true);
-	    		Utils.getListeTousBars().clear();
-	    		Iterator<Bar> iterator = Utils.getListeBarsHH().iterator();
-	    		while (iterator.hasNext()) {
-	    			Bar bar = iterator.next();
-	    			Utils.getListeTousBars().add(bar);
-	    			if (!bar.isBarHH()) {
-	    				iterator.remove();
-	    			}
-	    		}
-	    		// On modifie le titre du menu
-	    		item.setTitle(resources.getString(R.string.tousLesBars));
-	    	} else {
-	    		// On reaffiche la liste entière
+	    	if (Utils.isOnlyHH()) {
+	    		// On affiche la liste de tous les bars
 	    		Utils.setOnlyHH(false);
+	    		// On modifie le titre du menu et l'icone
+	    		item.setTitle(resources.getString(R.string.barsHH));
+	    		item.setIcon(R.drawable.ic_action_tous_bars);
 	    		Utils.getListeBarsHH().clear();
-	    		Iterator<Bar> iterator = Utils.getListeTousBars().iterator();
-	    		while (iterator.hasNext()) {
-	    			Bar bar = iterator.next();
+	    		for (Bar bar : Utils.getListeTousBars()) {
 	    			Utils.getListeBarsHH().add(bar);
 	    		}
-	    		item.setTitle(resources.getString(R.string.onlyHH));
+	    	} else {
+	    		// On affiche la liste des bars en HH aujourd'hui
+	    		Utils.setOnlyHH(true);
+	    		// On modifie le titre du menu et l'icône
+	    		item.setTitle(resources.getString(R.string.tousLesBars));
+	    		item.setIcon(R.drawable.ic_action_bars_hh);
+	    		Utils.getListeBarsHH().clear();
+	    		for (Bar bar : Utils.getListeTousBars()) {
+	    			if (bar.isBarHHAujourdhui())
+	    				Utils.getListeBarsHH().add(bar);
+	    		}
 	    	}
 	    	// On reconstruit la vue
 	    	adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
@@ -116,51 +112,51 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	    	final String[] itemsTri = new String[] { "Distance", "Prix", "Bars en HH" };
 	    	builder.setTitle("Trier par...");
-	    	builder.setSingleChoiceItems(itemsTri, itemTriSelectionne, 
+	    	builder.setSingleChoiceItems(itemsTri, Utils.getItemTriSelectionne(), 
 	    			new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int item) {
 					switch(item) {
-						// Tri par distance (valeur par défaut)
-						case 0:
-							itemTriSelectionne = 0;
-							Collections.sort(Utils.getListeBarsHH(), new BarComparator());
-							// On reconstruit la vue
-							adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
-					        listViewBars.setAdapter(adapter);
-							break;
-						// Tri par prix
-						case 1:
-							itemTriSelectionne = 1;
-							Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
-								@Override
-								public int compare(Bar bar1, Bar bar2) {
-									return bar1.getBarPrixBiereHH().compareTo(
-											bar2.getBarPrixBiereHH());
-								}
-							});
-							// On reconstruit la vue
-							adapter = new LazyAdapter(ListeBarsActivity.this, 
-									Utils.getListeBarsHH());
-					        listViewBars.setAdapter(adapter);
-							break;
-						// Tri par HH
-						case 2:
-							itemTriSelectionne = 2;
-							Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
-								@Override
-								public int compare(Bar bar1, Bar bar2) {
-									return Boolean.valueOf(bar2.isBarHH()).compareTo(
-											Boolean.valueOf(bar1.isBarHH()));
-								}
-							});
-							// On reconstruit la vue
-							adapter = new LazyAdapter(ListeBarsActivity.this, 
-									Utils.getListeBarsHH());
-					        listViewBars.setAdapter(adapter);
-							break;
+					// Tri par distance (valeur par défaut)
+					case 0:
+						Utils.setItemTriSelectionne(0);
+						Collections.sort(Utils.getListeBarsHH(), new BarComparator());
+						// On reconstruit la vue
+						adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
+				        listViewBars.setAdapter(adapter);
+						break;
+					// Tri par prix
+					case 1:
+						Utils.setItemTriSelectionne(1);
+						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+							@Override
+							public int compare(Bar bar1, Bar bar2) {
+								return bar1.getBarPrixBiereHH().compareTo(
+										bar2.getBarPrixBiereHH());
+							}
+						});
+						// On reconstruit la vue
+						adapter = new LazyAdapter(ListeBarsActivity.this, 
+								Utils.getListeBarsHH());
+				        listViewBars.setAdapter(adapter);
+						break;
+					// Tri par HH
+					case 2:
+						Utils.setItemTriSelectionne(2);
+						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+							@Override
+							public int compare(Bar bar1, Bar bar2) {
+								return Boolean.valueOf(bar2.isBarHH()).compareTo(
+										Boolean.valueOf(bar1.isBarHH()));
+							}
+						});
+						// On reconstruit la vue
+						adapter = new LazyAdapter(ListeBarsActivity.this, 
+								Utils.getListeBarsHH());
+				        listViewBars.setAdapter(adapter);
+						break;
 					}
-				dialogueTri.dismiss();
+					dialogueTri.dismiss();
 				}
 			});
 	    	dialogueTri = builder.create();
@@ -292,8 +288,7 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 				return "ExceptionServer";
 			}
 			// Alimentation de la liste à partir du serveur
-			Utils.setListeBarsHH(Utils.alimentationListeBars(strReponse, ListeBarsActivity.this, 
-					location));
+			Utils.alimentationListeBars(strReponse, ListeBarsActivity.this, location);
 	        return null;
 		}
 		
@@ -314,4 +309,5 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 			}
 		}
 	}
+		
 }
