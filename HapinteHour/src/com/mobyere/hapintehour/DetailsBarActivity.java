@@ -123,7 +123,7 @@ public class DetailsBarActivity extends Activity {
 			// On transmet à la page de la carte la liste des bars
 	    	intent = new Intent(DetailsBarActivity.this, MapActivity.class);
 	    	intent.putExtra("listeBars", (Parcelable) listePourCarte);
-	    	intent.putExtra("origine", Utils.getDetailsBar());
+	    	intent.putExtra("origine", Utils.getActivityDetailsBar());
 	    	startActivity(intent);
 	    	break;
 	    case R.id.action_navigation:
@@ -137,7 +137,7 @@ public class DetailsBarActivity extends Activity {
 	    	// Proposer un bar : on ouvre la page avec le formulaire
 	    	bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
 	    	intent = new Intent(DetailsBarActivity.this, PropErreurActivity.class);
-	    	intent.putExtra("origine", Utils.getSignalErreur());
+	    	intent.putExtra("origine", Utils.getActivitySignalErreur());
 	    	intent.putExtra("nomBar", bar.getBarNom());
 	    	startActivity(intent);
 	    	break;

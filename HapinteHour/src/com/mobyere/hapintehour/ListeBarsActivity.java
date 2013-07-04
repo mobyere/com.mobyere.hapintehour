@@ -2,12 +2,14 @@ package com.mobyere.hapintehour;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.mobyere.hapintehour.R;
 
 public class ListeBarsActivity extends Activity implements LocationListener {
 	private ListView listViewBars;
@@ -33,7 +34,7 @@ public class ListeBarsActivity extends Activity implements LocationListener {
     private AlertDialog dialogueTri;
     private int itemTriSelectionne = 0;
     private Intent intent;
-    
+        
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,26 +80,41 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	@Override
 	  public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	    case R.id.action_maps:
-	    	// On transmet à la page de la carte la liste des bars
-	    	intent = new Intent(ListeBarsActivity.this, MapActivity.class);
-	    	intent.putExtra("listeBars", (Parcelable) Utils.getListeBarsHH());
-	    	intent.putExtra("origine", Utils.getListeBars());
-	    	startActivity(intent);
+	    case R.id.action_onlyHH:
+	    	Resources resources = getResources();
+	    	if (!Utils.isOnlyHH()) {
+	    		// On n'affiche que les bars en HH
+	    		Utils.setOnlyHH(true);
+	    		Utils.getListeTousBars().clear();
+	    		Iterator<Bar> iterator = Utils.getListeBarsHH().iterator();
+	    		while (iterator.hasNext()) {
+	    			Bar bar = iterator.next();
+	    			Utils.getListeTousBars().add(bar);
+	    			if (!bar.isBarHH()) {
+	    				iterator.remove();
+	    			}
+	    		}
+	    		// On modifie le titre du menu
+	    		item.setTitle(resources.getString(R.string.tousLesBars));
+	    	} else {
+	    		// On reaffiche la liste entière
+	    		Utils.setOnlyHH(false);
+	    		Utils.getListeBarsHH().clear();
+	    		Iterator<Bar> iterator = Utils.getListeTousBars().iterator();
+	    		while (iterator.hasNext()) {
+	    			Bar bar = iterator.next();
+	    			Utils.getListeBarsHH().add(bar);
+	    		}
+	    		item.setTitle(resources.getString(R.string.onlyHH));
+	    	}
+	    	// On reconstruit la vue
+	    	adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
+	        listViewBars.setAdapter(adapter);
 	    	break;
-	    case R.id.action_refresh:
-	    	// On vide la liste et on supprime le texte de liste vide
-	    	Utils.getListeBarsHH().clear();
-	    	
-	    	if (View.VISIBLE == txtListeVide.getVisibility())
-	    		txtListeVide.setVisibility(View.GONE);
-	    	// On exécute la fonction qui alimente et affiche la liste des bars
-	    	new GetServerData().execute();
-	    	break;	    	
-	    case R.id.action_tri:
+    	case R.id.action_tri:
 	    	// On affiche une boite de dialogue avec les 2 choix de tri
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	final String[] itemsTri = new String[] { "Distance", "Prix" };
+	    	final String[] itemsTri = new String[] { "Distance", "Prix", "Bars en HH" };
 	    	builder.setTitle("Trier par...");
 	    	builder.setSingleChoiceItems(itemsTri, itemTriSelectionne, 
 	    			new DialogInterface.OnClickListener() {
@@ -128,6 +144,21 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 									Utils.getListeBarsHH());
 					        listViewBars.setAdapter(adapter);
 							break;
+						// Tri par HH
+						case 2:
+							itemTriSelectionne = 2;
+							Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+								@Override
+								public int compare(Bar bar1, Bar bar2) {
+									return Boolean.valueOf(bar2.isBarHH()).compareTo(
+											Boolean.valueOf(bar1.isBarHH()));
+								}
+							});
+							// On reconstruit la vue
+							adapter = new LazyAdapter(ListeBarsActivity.this, 
+									Utils.getListeBarsHH());
+					        listViewBars.setAdapter(adapter);
+							break;
 					}
 				dialogueTri.dismiss();
 				}
@@ -135,16 +166,31 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    	dialogueTri = builder.create();
 	    	dialogueTri.show();
 	    	break;
+    	case R.id.action_maps:
+    	// On transmet à la page de la carte la liste des bars
+    	intent = new Intent(ListeBarsActivity.this, MapActivity.class);
+    	intent.putExtra("listeBars", (Parcelable) Utils.getListeBarsHH());
+    	intent.putExtra("origine", Utils.getActivityListeBars());
+    	startActivity(intent);
+    	break;
+	    case R.id.action_refresh:
+	    	// On vide la liste et on supprime le texte de liste vide
+	    	Utils.getListeBarsHH().clear();
+	    	
+	    	if (View.VISIBLE == txtListeVide.getVisibility())
+	    		txtListeVide.setVisibility(View.GONE);
+	    	// On exécute la fonction qui alimente et affiche la liste des bars
+	    	new GetServerData().execute();
+	    	break;	    	
 	    case R.id.action_prop_bar:
 	    	// Proposer un bar : on ouvre la page avec le formulaire
 	    	intent = new Intent(ListeBarsActivity.this, PropErreurActivity.class);
-	    	intent.putExtra("origine", Utils.getPropoBar());
+	    	intent.putExtra("origine", Utils.getActivityPropoBar());
 	    	startActivity(intent);
 	    	break;
 	    default:
 	      break;
 	    }
-
 	    return true;
 	} 
 	

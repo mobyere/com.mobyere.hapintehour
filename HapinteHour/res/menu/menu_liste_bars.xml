@@ -1,6 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/action_onlyHH"
+        android:showAsAction="always"
+        android:title="@string/onlyHH" />
+        
+    <item 
+        android:id="@+id/action_tri"
+        android:showAsAction="ifRoom"
+        android:title="@string/trierPar"
+        android:icon="@drawable/ic_action_sort" />
+    
+    <item
         android:id="@+id/action_maps"
         android:showAsAction="always"
         android:title="@string/action_maps"
@@ -11,11 +22,6 @@
         android:showAsAction="never"
         android:title="@string/rafraichir"
         android:icon="@drawable/ic_action_refresh" />
-    
-    <item 
-        android:id="@+id/action_tri"
-        android:showAsAction="never"
-        android:title="@string/trierPar" />
     
     <item 
         android:id="@+id/action_prop_bar"

@@ -52,7 +52,7 @@ public class PropErreurActivity extends Activity {
 		btnValider = (Button) findViewById(R.id.btnValidPropErreur);
 		
 		// On est là pour proposer un bar
-		if (ecranAppelant.equals(Utils.getPropoBar())) {
+		if (ecranAppelant.equals(Utils.getActivityPropoBar())) {
 			// On affiche les champs mail et tel
 			txtNomBar.setEnabled(true);
 			txtNomBar.setText("");

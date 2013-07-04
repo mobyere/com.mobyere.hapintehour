@@ -65,7 +65,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 			@Override
 			public void onInfoWindowClick(Marker marker) {
 				// On ne peut cliquer que si on ne vient pas déjà du détail
-				if(!activityOrigine.equals(Utils.getDetailsBar())) {
+				if(!activityOrigine.equals(Utils.getActivityDetailsBar())) {
 					intent = new Intent(MapActivity.this, DetailsBarActivity.class);
 					intent.putExtra("BarSelectionne", Integer.parseInt(marker.getId().substring(1)));
 					startActivity(intent);

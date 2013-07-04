@@ -36,10 +36,12 @@ public class Utils {
 	//private static final String strURL = "http://192.168.2.103/";
 	private static final String strURL = "http://hapintehour.olympe.in/";
 	private static BarList listeBarsHH;
-	private static final String PROPO_BAR = "PropositionBar";
-	private static final String SIGNAL_ERREUR = "SignalErreur";
-	private static final String LISTE_BARS = "listeBars";
-	private static final String DETAILS_BAR = "detailsBar";
+	private static BarList listeTousBars = new BarList();
+	private static final String ACTIVITY_PROPO_BAR = "PropositionBar";
+	private static final String ACTIVITY_SIGNAL_ERREUR = "SignalErreur";
+	private static final String ACTIVITY_LISTE_BARS = "listeBars";
+	private static final String ACTIVITY_DETAILS_BAR = "detailsBar";
+	private static boolean isOnlyHH = false;
 	
     public static void CopyStream(InputStream is, OutputStream os)
     {
@@ -237,20 +239,36 @@ public class Utils {
 		Utils.listeBarsHH = listeBarsHH;
 	}
 
-	public static String getPropoBar() {
-		return PROPO_BAR;
+	public static BarList getListeTousBars() {
+		return listeTousBars;
 	}
 
-	public static String getSignalErreur() {
-		return SIGNAL_ERREUR;
+	public static void setListeTousBars(BarList listeTousBars) {
+		Utils.listeTousBars = listeTousBars;
 	}
 
-	public static String getListeBars() {
-		return LISTE_BARS;
+	public static String getActivityPropoBar() {
+		return ACTIVITY_PROPO_BAR;
 	}
 
-	public static String getDetailsBar() {
-		return DETAILS_BAR;
+	public static String getActivitySignalErreur() {
+		return ACTIVITY_SIGNAL_ERREUR;
+	}
+
+	public static String getActivityListeBars() {
+		return ACTIVITY_LISTE_BARS;
+	}
+
+	public static String getActivityDetailsBar() {
+		return ACTIVITY_DETAILS_BAR;
+	}
+
+	public static boolean isOnlyHH() {
+		return isOnlyHH;
+	}
+
+	public static void setOnlyHH(boolean isOnlyHH) {
+		Utils.isOnlyHH = isOnlyHH;
 	}
 
 }
