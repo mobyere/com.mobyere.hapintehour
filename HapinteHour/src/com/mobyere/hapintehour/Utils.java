@@ -229,6 +229,7 @@ public class Utils {
 	    	e.printStackTrace();
 	    }
         // Tri des bars par distance
+        Collections.sort(listeTousBars, new BarComparator());
         Collections.sort(listeBarsHH, new BarComparator());
 		//return null;
 	}

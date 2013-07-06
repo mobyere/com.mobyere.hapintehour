@@ -121,6 +121,7 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 					case 0:
 						Utils.setItemTriSelectionne(0);
 						Collections.sort(Utils.getListeBarsHH(), new BarComparator());
+						Collections.sort(Utils.getListeTousBars(), new BarComparator());
 						// On reconstruit la vue
 						adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
 				        listViewBars.setAdapter(adapter);
@@ -129,6 +130,13 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 					case 1:
 						Utils.setItemTriSelectionne(1);
 						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+							@Override
+							public int compare(Bar bar1, Bar bar2) {
+								return bar1.getBarPrixBiereHH().compareTo(
+										bar2.getBarPrixBiereHH());
+							}
+						});
+						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
 							@Override
 							public int compare(Bar bar1, Bar bar2) {
 								return bar1.getBarPrixBiereHH().compareTo(
@@ -144,6 +152,13 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 					case 2:
 						Utils.setItemTriSelectionne(2);
 						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+							@Override
+							public int compare(Bar bar1, Bar bar2) {
+								return Boolean.valueOf(bar2.isBarHH()).compareTo(
+										Boolean.valueOf(bar1.isBarHH()));
+							}
+						});
+						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
 							@Override
 							public int compare(Bar bar1, Bar bar2) {
 								return Boolean.valueOf(bar2.isBarHH()).compareTo(
