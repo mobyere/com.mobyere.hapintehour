@@ -44,7 +44,7 @@ public class LazyAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.activity_listview_bars, null);
  
-        TextView txtnomBar = (TextView)vi.findViewById(R.id.txtNomBar); 
+        TextView txtNomBar = (TextView)vi.findViewById(R.id.txtNomBar); 
         TextView txtPrixBiere = (TextView)vi.findViewById(R.id.txtPrixBiere); 
         //TextView txtPrixVin = (TextView)vi.findViewById(R.id.txtPrixVin);
         TextView txtHeureDebut = (TextView)vi.findViewById(R.id.txtHeureDebut);
@@ -53,17 +53,22 @@ public class LazyAdapter extends BaseAdapter {
         TextView txtDistanceBar = (TextView)vi.findViewById(R.id.txtDistanceBar); 
         TextView txtmKm = (TextView) vi.findViewById(R.id.txtmKm);
         TextView txtEnCours = (TextView) vi.findViewById(R.id.txtenCours);
- 
-        Bar bar = new Bar();
+	 
+	    Bar bar = new Bar();
         bar = data.get(position);
  
         // Setting all values in listview
         imageLoader.DisplayImage(bar.getBarUrlImage(), imgBar);
-        txtnomBar.setText(bar.getBarNom());
-        txtPrixBiere.setText(bar.getBarPrixBiereHH());
-        //txtPrixVin.setText(bar.getBarPrixVinHH());
-        txtHeureDebut.setText(bar.getBarHeureDebutHH());
-        txtHeureFin.setText(bar.getBarHeureFinHH());
+        txtNomBar.setText(bar.getBarNom());
+        if (bar.isBarHHAujourdhui()) {
+        	txtPrixBiere.setText(bar.getBarPrixBiereHH());
+        	txtHeureDebut.setText(bar.getBarHeureDebutHH());
+        	txtHeureFin.setText(bar.getBarHeureFinHH());
+        } else {
+        	txtPrixBiere.setText(bar.getBarPrixBiereHN());
+        	txtHeureDebut.setVisibility(View.INVISIBLE);
+        	txtHeureFin.setVisibility(View.GONE);
+        }
         // Gestion m/km
         float fDistance = bar.getBarDistance();
         DecimalFormat df;
@@ -80,7 +85,7 @@ public class LazyAdapter extends BaseAdapter {
         // On cache le texte "en cours" si l'happy hour n'est pas en cours
         if (!bar.isBarHH()) 
         	txtEnCours.setVisibility(View.INVISIBLE);
-        
+
         return vi;
     }
 }

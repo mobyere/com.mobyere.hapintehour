@@ -129,8 +129,11 @@ public class DetailsBarActivity extends Activity {
 	    case R.id.action_navigation:
 	    	bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
 	    	intent = new Intent(android.content.Intent.ACTION_VIEW, 
-	    			Uri.parse("geo:0,0?q=" + bar.getBarLatitude() + "," + 
-	    					bar.getBarLongitude() + " (" + bar.getBarNom() + ")"));
+//	    			Uri.parse("geo:" + bar.getBarLatitude() + "," + 
+//	    					bar.getBarLongitude() + "?q=" + bar.getBarLatitude() + "," + 
+//	    					bar.getBarLongitude()));
+	    			Uri.parse("geo:" + bar.getBarLatitude() + "," + bar.getBarLongitude() + 
+	    					"?q=" + bar.getBarNom()));
 	    	startActivity(intent);
 	    	break;
 	    case R.id.action_signal_erreur:
@@ -211,7 +214,8 @@ public class DetailsBarActivity extends Activity {
 					TelephonyManager telManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 					if (telManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE) {
 						Intent appel = new Intent(Intent.ACTION_DIAL, 
-								Uri.parse("tel:"+txtTelephoneBar.getText().toString()));
+								//Uri.parse("tel:"+txtTelephoneBar.getText().toString()));
+								Uri.parse("tel:"+bar.getBarTelephone()));
 						startActivity(appel);
 					}
 				}

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,18 +57,20 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	        listViewBars.setAdapter(adapter);
 	        
 	        // Listener sur le clic de la listview
-	        listViewBars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-					// On transmet la position du bar dans la liste à la page de la carte
-			    	Intent intent = new Intent(ListeBarsActivity.this, DetailsBarActivity.class);
-			    	intent.putExtra("BarSelectionne", position);
-			    	startActivity(intent);
-				}
-	        });
+	        listViewBars.setOnItemClickListener(mListeBarsListener);
 		}
 	}
 
+	// Implémentation de l'écoute sur le clic
+	private OnItemClickListener mListeBarsListener = new OnItemClickListener() {
+		public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+			// On transmet la position du bar dans la liste à la page de la carte
+	    	Intent intent = new Intent(ListeBarsActivity.this, DetailsBarActivity.class);
+	    	intent.putExtra("BarSelectionne", position);
+	    	startActivity(intent);
+		}
+    };
+	        
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -81,7 +84,8 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    case R.id.action_onlyHH:
 	    	// Affichage des bars : Tous ou que les HH
 	    	Resources resources = getResources();
-	    	if (Utils.isOnlyHH()) {
+	    	txtListeVide.setVisibility(View.GONE);
+    		if (Utils.isOnlyHH()) {
 	    		// On affiche la liste de tous les bars
 	    		Utils.setOnlyHH(false);
 	    		// On modifie le titre du menu et l'icone
@@ -104,9 +108,13 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    		}
 	    	}
 	    	// On reconstruit la vue
+	    	if (Utils.getListeBarsHH().isEmpty()) {
+				txtListeVide.setVisibility(View.VISIBLE);
+			} 
 	    	adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
 	        listViewBars.setAdapter(adapter);
-	    	break;
+	        listViewBars.setOnItemClickListener(mListeBarsListener);
+			break;
     	case R.id.action_tri:
 	    	// On affiche une boite de dialogue avec les 2 choix de tri
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -210,18 +218,6 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Si la localisation par réseau est dispo on choisit celle là (plus rapide)
-		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-						10000, 100, this);
-			provider = LocationManager.NETWORK_PROVIDER;
-		} else {
-		// On vérifie que le GPS est dispo (au cas où le network ne l'est pas
-			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-						10000, 100, this);
-			provider = LocationManager.GPS_PROVIDER;
-		}
 		// Aucun des deux n'est dispo, on propose de les activer
 		if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
 				!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -238,7 +234,18 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	
 	@Override
 	public void onLocationChanged(Location location) {
-		
+		// Si la localisation par réseau est dispo on choisit celle là (plus rapide)
+		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+						10000, 100, this);
+			provider = LocationManager.NETWORK_PROVIDER;
+		} else {
+		// On vérifie que le GPS est dispo (au cas où le network ne l'est pas
+			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+						10000, 100, this);
+			provider = LocationManager.GPS_PROVIDER;
+		}
 	}
 
 	@Override

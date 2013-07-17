@@ -130,22 +130,26 @@ public class Utils {
 		return 0;
 	}
 	
-	public static boolean estHHActuellement(String heureDebutHH, String heureFinHH) {
+	public static boolean estHHActuellement(Bar bar) {
 		boolean estHH = false;
-		try {
-			// Récupération heure locale
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRANCE);
-			Date heureDeb = sdf.parse(heureDebutHH);
-			Date heureFin = sdf.parse(heureFinHH);
-			Calendar calendar = new GregorianCalendar();
-			String strHeureAct = sdf.format(calendar.getTime());
-			Date heureActuelle = sdf.parse(strHeureAct);
-			if (heureActuelle.after(heureDeb) && heureActuelle.before(heureFin)) {
-				estHH = true;
+		String heureDebutHH = bar.getBarHeureDebutHH();
+		String heureFinHH = bar.getBarHeureFinHH();
+		if (bar.isBarHHAujourdhui()) {
+			try {
+				// Récupération heure locale
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+				Date heureDeb = sdf.parse(heureDebutHH);
+				Date heureFin = sdf.parse(heureFinHH);
+				Calendar calendar = new GregorianCalendar();
+				String strHeureAct = sdf.format(calendar.getTime());
+				Date heureActuelle = sdf.parse(strHeureAct);
+				if (heureActuelle.after(heureDeb) && heureActuelle.before(heureFin)) {
+					estHH = true;
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return false;
 			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return false;
 		}
 		
 		return estHH;
@@ -168,7 +172,8 @@ public class Utils {
 	        	// Alimentation données du bar
 	        	json_data = jArray.getJSONObject(i);
 	        	bar = new Bar();
-	        	bar.setBarID(Integer.parseInt(json_data.getString("bar_ID")));
+	        	bar.setBarHHAujourdhui(json_data.getInt("bar_isHH") == 1);
+				bar.setBarID(Integer.parseInt(json_data.getString("bar_ID")));
 	        	bar.setBarNom(json_data.getString("bar_Nom"));
 	        	aURL = new URL(getStrURL() + json_data.getString("bar_Image"));
 	        	bar.setBarUrlImage(aURL.toString());
@@ -176,7 +181,7 @@ public class Utils {
 	        	bar.setBarPrixBiereHN(json_data.getString("bar_PrixBiereHN"));
 	        	bar.setBarPrixVinHH(json_data.getString("bar_PrixVinHH"));
 	        	bar.setBarPrixVinHN(json_data.getString("bar_PrixVinHN"));
-	        	bar.setBarHeureDebutHH(json_data.getString("bar_HeureDebutHH"));
+        		bar.setBarHeureDebutHH(json_data.getString("bar_HeureDebutHH"));
 	        	bar.setBarHeureFinHH(json_data.getString("bar_HeureFinHH"));
 	        	bar.setBarRue(json_data.getString("bar_Rue")); 
 				bar.setBarCodePostal(json_data.getString("bar_CodePostal"));
@@ -189,9 +194,7 @@ public class Utils {
 	        	bar.setBarLongitude(coordonneesGps[1]);
 				bar.setBarDistance(Utils.calculDistance(location, bar.getBarLatitude(), 
 						bar.getBarLongitude()));
-				bar.setBarHH(Utils.estHHActuellement(bar.getBarHeureDebutHH(), 
-						bar.getBarHeureFinHH()));
-				bar.setBarHHAujourdhui(json_data.getInt("bar_isHH") == 1);
+				bar.setBarHH(Utils.estHHActuellement(bar));
 				bar.setBarHHLundi(json_data.getInt("bar_HHLundi") == 1);
 				bar.setBarHHMardi(json_data.getInt("bar_HHMardi") == 1);
 				bar.setBarHHMercredi(json_data.getInt("bar_HHMercredi") == 1);

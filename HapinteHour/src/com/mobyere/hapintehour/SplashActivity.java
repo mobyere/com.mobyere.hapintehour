@@ -72,18 +72,6 @@ public class SplashActivity extends Activity implements LocationListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Si la localisation par réseau est dispo on choisit celle là (plus rapide)
-		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-						10000, 100, this);
-			provider = LocationManager.NETWORK_PROVIDER;
-		} else {
-		// On vérifie que le GPS est dispo (au cas où le network ne l'est pas
-			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-						10000, 100, this);
-			provider = LocationManager.GPS_PROVIDER;
-		}
 		// Aucun des deux n'est dispo, on propose de les activer
 		if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
 				!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -100,6 +88,18 @@ public class SplashActivity extends Activity implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
+		// Si la localisation par réseau est dispo on choisit celle là (plus rapide)
+		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+						10000, 100, this);
+			provider = LocationManager.NETWORK_PROVIDER;
+		} else {
+		// On vérifie que le GPS est dispo (au cas où le network ne l'est pas
+			if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+						10000, 100, this);
+			provider = LocationManager.GPS_PROVIDER;
+		}
 	}
 
 	@Override
