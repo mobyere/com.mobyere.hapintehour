@@ -61,9 +61,16 @@ public class LazyAdapter extends BaseAdapter {
         imageLoader.DisplayImage(bar.getBarUrlImage(), imgBar);
         txtNomBar.setText(bar.getBarNom());
         if (bar.isBarHHAujourdhui()) {
-        	txtPrixBiere.setText(bar.getBarPrixBiereHH());
+        	// Bar en HH : affichage de l'heure
         	txtHeureDebut.setText(bar.getBarHeureDebutHH());
         	txtHeureFin.setText(bar.getBarHeureFinHH());
+        	
+        	// On affiche le prix HH ou normal suivant l'heure
+        	if (bar.isBarHH()) {
+	        	txtPrixBiere.setText(bar.getBarPrixBiereHH());
+        	} else {
+        		txtPrixBiere.setText(bar.getBarPrixBiereHN());
+        	}
         } else {
         	txtPrixBiere.setText(bar.getBarPrixBiereHN());
         	txtHeureDebut.setVisibility(View.INVISIBLE);

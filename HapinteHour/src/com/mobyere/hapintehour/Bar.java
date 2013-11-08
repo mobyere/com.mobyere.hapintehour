@@ -45,6 +45,7 @@ public class Bar implements Parcelable {
 	private String barFinHHSamedi;
 	private String barFinHHDimanche;
 	private String barDetails;
+	private String barPrixBiereActuel;
 		
 	public Bar() {
 
@@ -460,6 +461,14 @@ public class Bar implements Parcelable {
 
 	public void setBarDetails(String barDetails) {
 		this.barDetails = barDetails;
+	}
+
+	public String getBarPrixBiereActuel() {
+		return barPrixBiereActuel;
+	}
+
+	public void setBarPrixBiereActuel(String barPrixBiereActuel) {
+		this.barPrixBiereActuel = barPrixBiereActuel;
 	}
 	
 }

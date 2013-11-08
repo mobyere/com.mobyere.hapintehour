@@ -20,12 +20,12 @@
 		        android:layout_width="wrap_content"
 		    	android:layout_height="wrap_content"
 		    	android:layout_alignParentLeft="true"
-		    	android:padding="5dp" >
+		    	android:layout_gravity="center_vertical"
+			    android:padding="5dp" >
 			    <ImageView
 			        android:id="@+id/imgBarDetail"
 			        android:layout_width="110dp"
 			        android:layout_height="110dp"
-			        android:layout_gravity="center_vertical"
 			        android:contentDescription="@string/contentDescription"
 			        android:scaleType="fitXY"
 			        android:src="@drawable/ic_bar_defaut" />
@@ -186,7 +186,7 @@
 			    android:id="@+id/imgVinDetail"
 			    android:layout_width="40dp"
 			    android:layout_height="40dp"
-			    android:src="@drawable/ic_wine_couleur"
+			    android:src="@drawable/ic_cocktail_couleur"
 			    android:contentDescription="@string/contentDescription"
 			    android:layout_alignTop="@id/imgBiereDetail"
 			    android:layout_alignLeft="@id/imgCadreVinDetail"

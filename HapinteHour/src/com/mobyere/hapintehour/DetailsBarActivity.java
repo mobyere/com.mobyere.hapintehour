@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.mobyere.hapintehour.R;
 
 public class DetailsBarActivity extends Activity {
 	private ImageView imgBarDetail;
@@ -51,7 +49,6 @@ public class DetailsBarActivity extends Activity {
 	private TextView txtVendredi;
 	private TextView txtSamedi;
 	private TextView txtDimanche;
-	private BarList listePourCarte;
 	private TextView txtTitreDetail;
 	private TextView txtDetails;
 	private ImageView imgCadreDetails;
@@ -115,27 +112,6 @@ public class DetailsBarActivity extends Activity {
 			NavUtils.navigateUpFromSameTask(this);
 			//finish();
 			break;
-	    case R.id.action_maps:
-	    	// Ajout du bar dans une liste pour le passage à la carte
-			Bar barPourCarte = Utils.getListeBarsHH().get(vp.getCurrentItem());
-			listePourCarte = new BarList();
-			listePourCarte.add(barPourCarte);
-			// On transmet à la page de la carte la liste des bars
-	    	intent = new Intent(DetailsBarActivity.this, MapActivity.class);
-	    	intent.putExtra("listeBars", (Parcelable) listePourCarte);
-	    	intent.putExtra("origine", Utils.getActivityDetailsBar());
-	    	startActivity(intent);
-	    	break;
-	    case R.id.action_navigation:
-	    	bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
-	    	intent = new Intent(android.content.Intent.ACTION_VIEW, 
-//	    			Uri.parse("geo:" + bar.getBarLatitude() + "," + 
-//	    					bar.getBarLongitude() + "?q=" + bar.getBarLatitude() + "," + 
-//	    					bar.getBarLongitude()));
-	    			Uri.parse("geo:" + bar.getBarLatitude() + "," + bar.getBarLongitude() + 
-	    					"?q=" + bar.getBarNom()));
-	    	startActivity(intent);
-	    	break;
 	    case R.id.action_signal_erreur:
 	    	// Proposer un bar : on ouvre la page avec le formulaire
 	    	bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
@@ -203,7 +179,7 @@ public class DetailsBarActivity extends Activity {
 		    txtCodePostalBarDetail.setText(bar.getBarCodePostal());
 		    txtVilleBarDetail.setText(bar.getBarVille());
 	        txtTelephoneBar.setText(bar.getBarTelephone());
-	        if (bar.getBarTelephone().isEmpty()) {
+	        if ("".equalsIgnoreCase(bar.getBarTelephone())) {
 	        	imgTelephoneDetail.setVisibility(View.INVISIBLE);
 	        }
 	        
@@ -211,13 +187,37 @@ public class DetailsBarActivity extends Activity {
 	        txtTelephoneBar.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					TelephonyManager telManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+					bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
+				    TelephonyManager telManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 					if (telManager.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE) {
 						Intent appel = new Intent(Intent.ACTION_DIAL, 
 								//Uri.parse("tel:"+txtTelephoneBar.getText().toString()));
 								Uri.parse("tel:"+bar.getBarTelephone()));
 						startActivity(appel);
 					}
+				}
+			});
+	        
+	        // Listener sur le clic sur l'adresse (envoi vers maps pour navigation)
+	        txtRueBarDetail.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					appelIntentMaps();
+				}
+			});
+	        txtCodePostalBarDetail.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					appelIntentMaps();
+				}
+			});
+	        txtVilleBarDetail.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					appelIntentMaps();
 				}
 			});
 	        
@@ -323,5 +323,21 @@ public class DetailsBarActivity extends Activity {
 	      ((ViewPager) container).removeView((View) object);
 	      object=null;
 	    }
+		
+		
+		/**
+		 * Appel de Gmaps pour la navigation jusqu'au bar
+		 * @param bar
+		 */
+		private void appelIntentMaps() {
+			bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
+		    intent = new Intent(android.content.Intent.ACTION_VIEW, 
+//	    			Uri.parse("geo:" + bar.getBarLatitude() + "," + 
+//	    					bar.getBarLongitude() + "?q=" + bar.getBarLatitude() + "," + 
+//	    					bar.getBarLongitude()));
+	    			Uri.parse("geo:" + bar.getBarLatitude() + "," + bar.getBarLongitude() + 
+	    					"?q=" + bar.getBarNom()));
+	    	startActivity(intent);
+		}
 	}
 }

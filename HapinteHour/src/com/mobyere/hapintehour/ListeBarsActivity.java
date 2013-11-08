@@ -95,6 +95,8 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    		for (Bar bar : Utils.getListeTousBars()) {
 	    			Utils.getListeBarsHH().add(bar);
 	    		}
+	    		// Affichage d'un toast indiquant ce qu'on affiche
+	    		Toast.makeText(ListeBarsActivity.this, "Liste de tous les bars", Toast.LENGTH_SHORT).show();
 	    	} else {
 	    		// On affiche la liste des bars en HH aujourd'hui
 	    		Utils.setOnlyHH(true);
@@ -103,9 +105,11 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    		item.setIcon(R.drawable.ic_action_bars_hh);
 	    		Utils.getListeBarsHH().clear();
 	    		for (Bar bar : Utils.getListeTousBars()) {
-	    			if (bar.isBarHHAujourdhui())
+	    			if (bar.isBarHHAujourdhui() && !Utils.estHHFini(bar))
 	    				Utils.getListeBarsHH().add(bar);
 	    		}
+	    		// Affichage d'un toast indiquant ce qu'on affiche
+	    		Toast.makeText(ListeBarsActivity.this, "Liste des bars en Happy Hour", Toast.LENGTH_SHORT).show();
 	    	}
 	    	// On reconstruit la vue
 	    	if (Utils.getListeBarsHH().isEmpty()) {
@@ -116,32 +120,23 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	        listViewBars.setOnItemClickListener(mListeBarsListener);
 			break;
     	case R.id.action_tri:
-	    	// On affiche une boite de dialogue avec les 2 choix de tri
+	    	// On affiche une boite de dialogue avec les 3 choix de tri
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	final String[] itemsTri = new String[] { "Distance", "Prix", "Bars en HH" };
+	    	final String[] itemsTri = new String[] { "Distance", "Prix", "Heure de départ" };
 	    	builder.setTitle("Trier par...");
 	    	builder.setSingleChoiceItems(itemsTri, Utils.getItemTriSelectionne(), 
 	    			new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int item) {
 					switch(item) {
-					// Tri par distance (valeur par défaut)
+					// Tri par prix (valeur par défaut)
 					case 0:
 						Utils.setItemTriSelectionne(0);
-						Collections.sort(Utils.getListeBarsHH(), new BarComparator());
-						Collections.sort(Utils.getListeTousBars(), new BarComparator());
-						// On reconstruit la vue
-						adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
-				        listViewBars.setAdapter(adapter);
-						break;
-					// Tri par prix
-					case 1:
-						Utils.setItemTriSelectionne(1);
 						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
 							@Override
 							public int compare(Bar bar1, Bar bar2) {
-								return bar1.getBarPrixBiereHH().compareTo(
-										bar2.getBarPrixBiereHH());
+								return bar1.getBarPrixBiereActuel().compareTo(
+										bar2.getBarPrixBiereActuel());
 							}
 						});
 						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
@@ -156,14 +151,22 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 								Utils.getListeBarsHH());
 				        listViewBars.setAdapter(adapter);
 						break;
-					// Tri par HH
+					// Tri par distance
+					case 1:
+						Utils.setItemTriSelectionne(1);
+						Collections.sort(Utils.getListeBarsHH(), new BarComparator());
+						Collections.sort(Utils.getListeTousBars(), new BarComparator());
+						// On reconstruit la vue
+						adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
+				        listViewBars.setAdapter(adapter);
+						break;
+					// Tri par horaire
 					case 2:
 						Utils.setItemTriSelectionne(2);
 						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
 							@Override
 							public int compare(Bar bar1, Bar bar2) {
-								return Boolean.valueOf(bar2.isBarHH()).compareTo(
-										Boolean.valueOf(bar1.isBarHH()));
+								return bar1.getBarHeureDebutHH().compareTo(bar2.getBarHeureDebutHH());
 							}
 						});
 						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {

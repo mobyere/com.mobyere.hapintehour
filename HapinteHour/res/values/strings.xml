@@ -16,7 +16,7 @@
     <string name="contentDescription">Image</string>
     <string name="a">à</string>
     <string name="m">m</string>
-    <string name="details">Détails</string>
+    <string name="details"><u>Détails</u></string>
     <string name="listeVide">Aucun Happy Hour aujourd\'hui :(</string>
     <string name="title_activity_details_bar">DetailsBarActivity</string>
     <string name="nonRenseigne">Non renseigné</string>

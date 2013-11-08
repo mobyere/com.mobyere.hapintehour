@@ -113,7 +113,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
      * Méthode permettant de se désabonner de la localisation par GPS.
      */
     public void desabonnementGPS() {
-        //Si le GPS est disponible, on s'y abonne
         locationManager.removeUpdates(this);
     }
     
@@ -175,8 +174,10 @@ public class MapActivity extends FragmentActivity implements LocationListener {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     	intent = new Intent(android.content.Intent.ACTION_VIEW, 
-    			    			Uri.parse("geo:0,0?q=" + bar.getBarLatitude() + "," + 
-    			    					bar.getBarLongitude() + " (" + bar.getBarNom() + ")"));
+    			    			/*Uri.parse("geo:0,0?q=" + bar.getBarLatitude() + "," + 
+    			    					bar.getBarLongitude() + " (" + bar.getBarNom() + ")"));*/
+                    			Uri.parse("geo:" + bar.getBarLatitude() + "," + bar.getBarLongitude() + 
+            	    					"?q=" + bar.getBarNom()));
     			    	startActivity(intent);
     			    	finish();
                     }
