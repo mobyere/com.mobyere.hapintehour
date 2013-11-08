@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -61,11 +62,16 @@ public class Utils {
         catch(Exception ex){}
     }
     
+    /**
+     * Appelle la requête php permettant de récupérer la liste des bars
+     * @return
+     */
     public static String makeWebCall() {
     	
-    	String url = Utils.getStrURL() + "bars.php";
+    	//String urlTest = Utils.getStrURL() + "barsTest.php";
+    	String urlToulouse = Utils.getStrURL() + "barsToulouse.php";
 	    DefaultHttpClient client = new DefaultHttpClient();
-	    HttpGet httpRequest = new HttpGet(url);
+	    HttpGet httpRequest = new HttpGet(urlToulouse);
 	    
 	    try {
 	        HttpResponse httpResponse = client.execute(httpRequest);
@@ -82,7 +88,7 @@ public class Utils {
 	    }
 	    catch (IOException e) {
 	        httpRequest.abort();
-	        Log.w(ListeBarsActivity.class.getSimpleName(), "Error for URL =>" + url, e);
+	        Log.w(ListeBarsActivity.class.getSimpleName(), "Error for URL =>" + urlToulouse, e);
 	    }
 	    return null;
 	 }
@@ -104,6 +110,12 @@ public class Utils {
 	    return contentOfMyInputStream;
 	}
     
+    /**
+     * Calcule la longitude/latitude à partir d'une adresse
+     * @param adresse
+     * @param context
+     * @return coordonnees gps de l'adresse
+     */
     public static double[] recupererCoordonneesGPS(String adresse, Context context){
     	double[] coordonnees = new double[2];
     	
@@ -120,7 +132,16 @@ public class Utils {
     	return coordonnees;
     }
 	
+	/**
+	 * Calcule la distance entre les coordonnées données et la location du gps
+	 * @param location
+	 * @param latitude
+	 * @param longitude
+	 * @return la distance avec la position transmise
+	 */
 	public static float calculDistance(Location location, double latitude, double longitude) {
+		if (null == location)
+			return 0;
 		float[] results = new float[1];
 		Location.distanceBetween(location.getLatitude(), location.getLongitude(), 
 				latitude, longitude, results);		
@@ -130,6 +151,11 @@ public class Utils {
 		return 0;
 	}
 	
+	/**
+	 * Indique si le bar est en HH actuellement
+	 * @param bar
+	 * @return true si le HH est en cours
+	 */
 	public static boolean estHHActuellement(Bar bar) {
 		boolean estHH = false;
 		String heureDebutHH = bar.getBarHeureDebutHH();
@@ -155,8 +181,39 @@ public class Utils {
 		return estHH;
 	}
 	
-	// Fonction qui alimente la liste des bars à partir du serveur
-	// Retourne la liste triée (bars en HH triés par distance)
+	/**
+	 * Indique si le HH du jour est fini
+	 * @param bar
+	 * @return true si le HH est fini
+	 */
+	public static boolean estHHFini(Bar bar) {
+		boolean estHHFini = false;
+		String heureFinHH = bar.getBarHeureFinHH();
+		try {
+			// Récupération heure locale
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRANCE);
+			Date heureFin = sdf.parse(heureFinHH);
+			Calendar calendar = new GregorianCalendar();
+			String strHeureAct = sdf.format(calendar.getTime());
+			Date heureActuelle = sdf.parse(strHeureAct);
+			if (heureActuelle.after(heureFin)) {
+				estHHFini = true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		return estHHFini;
+	}
+	
+	/**
+	 * Fonction qui alimente la liste des bars à partir du serveur
+	 * Retourne la liste triée (bars en HH triés par distance)
+	 * @param strReponse
+	 * @param context
+	 * @param location
+	 */
 	public static void alimentationListeBars(String strReponse, Context context, 
 			Location location) {
 		listeTousBars = new BarList();
@@ -164,7 +221,6 @@ public class Utils {
 		
 		Bar bar = null;
         URL aURL;
-        double[] coordonneesGps = new double[2];
         try{
 			JSONObject json_data=null;
 			JSONArray jArray = new JSONArray(strReponse);
@@ -187,12 +243,10 @@ public class Utils {
 				bar.setBarCodePostal(json_data.getString("bar_CodePostal"));
 				bar.setBarVille(json_data.getString("bar_Ville"));
 	        	bar.setBarTelephone(json_data.getString("bar_Telephone"));
-	        	// Récupération localisation et calcul distance
-				coordonneesGps = Utils.recupererCoordonneesGPS(bar.getBarRue() + " " +
-						bar.getBarCodePostal() + " " + bar.getBarVille(), context);
-	        	bar.setBarLatitude(coordonneesGps[0]);
-	        	bar.setBarLongitude(coordonneesGps[1]);
-				bar.setBarDistance(Utils.calculDistance(location, bar.getBarLatitude(), 
+				bar.setBarLatitude(json_data.getDouble("bar_Latitude"));
+	        	bar.setBarLongitude(json_data.getDouble("bar_Longitude"));
+				// Calcul de la position entre l'utilisateur et le bar
+	        	bar.setBarDistance(Utils.calculDistance(location, bar.getBarLatitude(), 
 						bar.getBarLongitude()));
 				bar.setBarHH(Utils.estHHActuellement(bar));
 				bar.setBarHHLundi(json_data.getInt("bar_HHLundi") == 1);
@@ -217,10 +271,17 @@ public class Utils {
 				bar.setBarFinHHSamedi(json_data.getString("bar_HeureFinHHSamedi"));
 				bar.setBarFinHHDimanche(json_data.getString("bar_HeureFinHHDimanche"));
 				bar.setBarDetails(json_data.getString("bar_Details"));
+				// On valorise la valeur du prix actuel suivant si on est en HH ou pas (utile pour le tri par prix)
+				if (bar.isBarHH()) {
+					bar.setBarPrixBiereActuel(bar.getBarPrixBiereHH());
+				} else  {
+					bar.setBarPrixBiereActuel(bar.getBarPrixBiereHN());
+				}
 				// On rajoute le bar dans la liste de tous les bars
 				listeTousBars.add(bar);
-				// Si le bar est en HH aujourd'hui, on le rajoute dans la liste des bars en HH
-				if (json_data.getInt("bar_isHH") == 1) {
+				// Si le bar est en HH aujourd'hui et que l'heure de fin de HH n'est pas passée, 
+				// on le rajoute dans la liste des bars en HH
+				if (bar.isBarHHAujourdhui() && !estHHFini(bar)) {
 					listeBarsHH.add(bar);
 				}
 	        }
@@ -231,12 +292,25 @@ public class Utils {
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	    }
-        // Tri des bars par distance
-        Collections.sort(listeTousBars, new BarComparator());
-        Collections.sort(listeBarsHH, new BarComparator());
-		//return null;
+        // Tri des bars par prix par défaut
+        Collections.sort(listeTousBars, new Comparator<Bar>() {
+			@Override
+			public int compare(Bar bar1, Bar bar2) {
+				return bar1.getBarPrixBiereActuel().compareTo(
+						bar2.getBarPrixBiereActuel());
+			}
+		});
+        Collections.sort(listeBarsHH, new Comparator<Bar>() {
+			@Override
+			public int compare(Bar bar1, Bar bar2) {
+				return bar1.getBarPrixBiereActuel().compareTo(
+						bar2.getBarPrixBiereActuel());
+			}
+		});
+        //return null;
 	}
 
+	// GETTERS - SETTERS
 	public static String getStrURL() {
 		return strURL;
 	}
