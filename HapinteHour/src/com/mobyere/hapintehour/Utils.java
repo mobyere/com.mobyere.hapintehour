@@ -17,6 +17,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
+import org.acra.ACRA;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -290,6 +291,7 @@ public class Utils {
 	    } catch (MalformedURLException e) {
 	    	e.printStackTrace();
 	    } catch (Exception e) {
+	    	ACRA.getErrorReporter().handleException(e);
 	    	e.printStackTrace();
 	    }
         // Tri des bars par prix par défaut
