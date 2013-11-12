@@ -131,7 +131,10 @@ public class DetailsBarActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			return Utils.getListeBarsHH().size();
+			if (null != Utils.getListeBarsHH()) {
+				return Utils.getListeBarsHH().size();
+			}
+			return 0;
 		}
 
 		//Create the given page (indicated by position)
