@@ -3,6 +3,8 @@ package com.mobyere.hapintehour;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.mobyere.hapintehour.dao.FavorisDao;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -122,7 +124,7 @@ public class ListeBarsActivity extends Activity implements LocationListener {
     	case R.id.action_tri:
 	    	// On affiche une boite de dialogue avec les 3 choix de tri
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	final String[] itemsTri = new String[] { "Distance", "Prix", "Heure de départ" };
+	    	final String[] itemsTri = new String[] { "Prix", "Distance", "Heure de départ", "Favoris" };
 	    	builder.setTitle("Trier par...");
 	    	builder.setSingleChoiceItems(itemsTri, Utils.getItemTriSelectionne(), 
 	    			new DialogInterface.OnClickListener() {
@@ -142,8 +144,8 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
 							@Override
 							public int compare(Bar bar1, Bar bar2) {
-								return bar1.getBarPrixBiereHH().compareTo(
-										bar2.getBarPrixBiereHH());
+								return bar1.getBarPrixBiereActuel().compareTo(
+										bar2.getBarPrixBiereActuel());
 							}
 						});
 						// On reconstruit la vue
@@ -172,8 +174,29 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
 							@Override
 							public int compare(Bar bar1, Bar bar2) {
-								return Boolean.valueOf(bar2.isBarHH()).compareTo(
-										Boolean.valueOf(bar1.isBarHH()));
+								return bar1.getBarHeureDebutHH().compareTo(bar2.getBarHeureDebutHH());
+							}
+						});
+						// On reconstruit la vue
+						adapter = new LazyAdapter(ListeBarsActivity.this, 
+								Utils.getListeBarsHH());
+				        listViewBars.setAdapter(adapter);
+						break;
+					// Tri par favoris
+					case 3:
+						Utils.setItemTriSelectionne(3);
+						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+							@Override
+							public int compare(Bar bar1, Bar bar2) {
+								return Boolean.valueOf(bar2.isBarFavori()).compareTo(
+										Boolean.valueOf(bar1.isBarFavori()));
+							}
+						});
+						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
+							@Override
+							public int compare(Bar bar1, Bar bar2) {
+								return Boolean.valueOf(bar2.isBarFavori()).compareTo(
+										Boolean.valueOf(bar1.isBarFavori()));
 							}
 						});
 						// On reconstruit la vue
@@ -226,7 +249,8 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 				!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			createGpsDisabledAlert();
 		}
-		
+		adapter.notifyDataSetChanged();
+		listViewBars.setAdapter(adapter);
 	}
 	
 	@Override
@@ -312,8 +336,13 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 			if (null == strReponse) {
 				return "ExceptionServer";
 			}
+			// On ouvre la BDD
+			FavorisDao favorisDao = new FavorisDao(ListeBarsActivity.this);
+			favorisDao.open();
 			// Alimentation de la liste à partir du serveur
-			Utils.alimentationListeBars(strReponse, ListeBarsActivity.this, location);
+			Utils.alimentationListeBars(strReponse, ListeBarsActivity.this, location, favorisDao);
+			// Fermeture de la BDD
+			favorisDao.close();
 	        return null;
 		}
 		

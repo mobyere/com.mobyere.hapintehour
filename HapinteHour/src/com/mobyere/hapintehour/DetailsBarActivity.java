@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -19,6 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mobyere.hapintehour.dao.FavorisDao;
+import com.mobyere.hapintehour.dao.FavorisMetier;
 
 public class DetailsBarActivity extends Activity {
 	private ImageView imgBarDetail;
@@ -55,6 +59,8 @@ public class DetailsBarActivity extends Activity {
 	private Bar bar;
 	private int positionBar;
 	private Intent intent;
+	private FavorisDao favorisDao;
+	private FavorisMetier barFavoris;
 	
 	// Pour le swipe
 	private LayoutInflater inflater;	//Used to create individual pages
@@ -64,6 +70,7 @@ public class DetailsBarActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details_bar);
+		
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
@@ -79,6 +86,26 @@ public class DetailsBarActivity extends Activity {
 		//set the adapter that will create the individual pages
 		vp.setAdapter(new MyPagesAdapter());
 		vp.setCurrentItem(positionBar);
+		
+		vp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+
+			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// On met à jour le menu à chaque scroll 
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				  invalidateOptionsMenu();
+				}
+			}
+		});
 	}
 
 	/**
@@ -95,6 +122,19 @@ public class DetailsBarActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_details_bar, menu);
+		// Modification du menu
+		MenuItem item = menu.findItem(R.id.action_favoris);
+		bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
+		// On recherche si le bar est un favori
+		//new lectureBddBackgroung().execute();
+		barFavoris = favorisDao.getFavoriByBarId(bar.getBarID());
+		if (null != barFavoris) {
+			item.setIcon(R.drawable.ic_favoris_couleur);
+			bar.setBarFavori(true);
+		} else {
+			item.setIcon(R.drawable.ic_favoris_nb);
+			bar.setBarFavori(false);
+		}
 		return true;
 	}
 
@@ -114,12 +154,27 @@ public class DetailsBarActivity extends Activity {
 			break;
 	    case R.id.action_signal_erreur:
 	    	// Proposer un bar : on ouvre la page avec le formulaire
-	    	bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
+	    	//bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
 	    	intent = new Intent(DetailsBarActivity.this, PropErreurActivity.class);
 	    	intent.putExtra("origine", Utils.getActivitySignalErreur());
 	    	intent.putExtra("nomBar", bar.getBarNom());
 	    	startActivity(intent);
 	    	break;
+	    case R.id.action_favoris:
+	    	// Ajout (ou suppression) d'un favori dans le fichier
+	    	bar = Utils.getListeBarsHH().get(vp.getCurrentItem());
+	    	if (bar.isBarFavori()) {
+	    		item.setIcon(R.drawable.ic_favoris_nb);
+	    		bar.setBarFavori(false);
+	    		// Suppression du bar de la bdd
+	    		favorisDao.supprimerBarId(bar.getBarID());
+	    	} else {
+	    		item.setIcon(R.drawable.ic_favoris_couleur);
+	    		bar.setBarFavori(true);
+	    		// Ajout du bar dans la bdd
+	    		favorisDao.ajouterBarId(bar.getBarID());
+	    	}
+	    	
 	    default:
 	      break;
 		}
@@ -343,4 +398,28 @@ public class DetailsBarActivity extends Activity {
 	    	startActivity(intent);
 		}
 	}
+	
+	private class accesBddBackgroung extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			// Ouverture bdd
+			favorisDao = new FavorisDao(DetailsBarActivity.this);
+			favorisDao.open();
+			return null;
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		// Ouverture de la bdd
+		new accesBddBackgroung().execute();
+		super.onResume();
+	}
+	
+	@Override
+	  protected void onPause() {
+	    favorisDao.close();
+	    super.onPause();
+	  }
 }

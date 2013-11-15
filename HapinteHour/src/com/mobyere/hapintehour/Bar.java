@@ -46,6 +46,7 @@ public class Bar implements Parcelable {
 	private String barFinHHDimanche;
 	private String barDetails;
 	private String barPrixBiereActuel;
+	private boolean isBarFavori = false;
 		
 	public Bar() {
 
@@ -117,6 +118,7 @@ public class Bar implements Parcelable {
 		dest.writeString(barFinHHSamedi);
 		dest.writeString(barFinHHDimanche);
 		dest.writeString(barDetails);
+		dest.writeInt(isBarFavori ? 0 : 1);
 	}
 	
 	public void getFromParcel(Parcel in) {
@@ -160,6 +162,7 @@ public class Bar implements Parcelable {
 		this.setBarFinHHSamedi(in.readString());
 		this.setBarFinHHDimanche(in.readString());
 		this.setBarDetails(in.readString());
+		this.setBarFavori(in.readInt() == 0);
 	}
 	
 	public int getBarID() {
@@ -469,6 +472,14 @@ public class Bar implements Parcelable {
 
 	public void setBarPrixBiereActuel(String barPrixBiereActuel) {
 		this.barPrixBiereActuel = barPrixBiereActuel;
+	}
+
+	public boolean isBarFavori() {
+		return isBarFavori;
+	}
+
+	public void setBarFavori(boolean isBarFavori) {
+		this.isBarFavori = isBarFavori;
 	}
 	
 }

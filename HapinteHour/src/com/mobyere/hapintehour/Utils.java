@@ -27,6 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mobyere.hapintehour.dao.FavorisDao;
+import com.mobyere.hapintehour.dao.FavorisMetier;
+
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -71,6 +74,7 @@ public class Utils {
     	
     	//String urlTest = Utils.getStrURL() + "barsTest.php";
     	String urlToulouse = Utils.getStrURL() + "barsToulouse.php";
+    	Log.i("URLConnection", urlToulouse);
 	    DefaultHttpClient client = new DefaultHttpClient();
 	    HttpGet httpRequest = new HttpGet(urlToulouse);
 	    
@@ -216,7 +220,7 @@ public class Utils {
 	 * @param location
 	 */
 	public static void alimentationListeBars(String strReponse, Context context, 
-			Location location) {
+			Location location, FavorisDao favorisDao) {
 		listeTousBars = new BarList();
 		listeBarsHH = new BarList();
 		
@@ -278,6 +282,10 @@ public class Utils {
 				} else  {
 					bar.setBarPrixBiereActuel(bar.getBarPrixBiereHN());
 				}
+				// On recherche dans la BDD si le bar est un favori
+				FavorisMetier barFavoris = favorisDao.getFavoriByBarId(bar.getBarID());
+				if (null != barFavoris)
+					bar.setBarFavori(true);
 				// On rajoute le bar dans la liste de tous les bars
 				listeTousBars.add(bar);
 				// Si le bar est en HH aujourd'hui et que l'heure de fin de HH n'est pas passée, 
