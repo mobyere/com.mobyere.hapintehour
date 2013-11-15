@@ -181,6 +181,16 @@
         android:layout_marginRight="5dp" />
    	
    	<ImageView
+   	    android:id="@+id/imgFavori"
+   	    android:layout_width="25dp"
+   	    android:layout_height="25dp"
+   	    android:layout_alignParentRight="true"
+   	    android:layout_alignTop="@id/id_thumbnail"
+   	    android:paddingTop="5dp"
+   	    android:contentDescription="@string/contentDescription"
+   	    android:src="@drawable/ic_favoris_nb" />
+   	
+   	<ImageView
    	    android:layout_width="18dp"
    	    android:layout_height="18dp"
    	    android:layout_alignParentRight="true"

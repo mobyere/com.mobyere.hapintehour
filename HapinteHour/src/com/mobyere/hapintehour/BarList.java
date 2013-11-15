@@ -87,6 +87,7 @@ class BarList extends ArrayList<Bar> implements Parcelable
     		dest.writeString(bar.getBarFinHHSamedi());
     		dest.writeString(bar.getBarFinHHDimanche());
     		dest.writeString(bar.getBarDetails());
+    		dest.writeInt(bar.isBarFavori() ? 0 : 1);
         }
     }
  
@@ -142,6 +143,7 @@ class BarList extends ArrayList<Bar> implements Parcelable
             bar.setBarFinHHSamedi(in.readString());
             bar.setBarFinHHDimanche(in.readString());
             bar.setBarDetails(in.readString());
+            bar.setBarFavori(in.readInt() == 0);
             
             this.add(bar);
         }

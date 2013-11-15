@@ -1,5 +1,7 @@
 package com.mobyere.hapintehour;
 
+import com.mobyere.hapintehour.dao.FavorisDao;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -49,8 +51,13 @@ public class SplashActivity extends Activity implements LocationListener {
 			if (null == strReponse) {
 				return "ExceptionServer";
 			}			
+			// On ouvre la BDD
+			FavorisDao favorisDao = new FavorisDao(SplashActivity.this);
+			favorisDao.open();
 			// Alimentation de la liste à partir du serveur
-			Utils.alimentationListeBars(strReponse, SplashActivity.this, location);
+			Utils.alimentationListeBars(strReponse, SplashActivity.this, location, favorisDao);
+			// Fermeture de la BDD
+			favorisDao.close();
 	        return null;
 		}
 		

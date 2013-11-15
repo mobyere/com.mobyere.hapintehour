@@ -53,6 +53,7 @@ public class LazyAdapter extends BaseAdapter {
         TextView txtDistanceBar = (TextView)vi.findViewById(R.id.txtDistanceBar); 
         TextView txtmKm = (TextView) vi.findViewById(R.id.txtmKm);
         TextView txtEnCours = (TextView) vi.findViewById(R.id.txtenCours);
+        ImageView imgFavori = (ImageView)vi.findViewById(R.id.imgFavori);
 	 
 	    Bar bar = new Bar();
         bar = data.get(position);
@@ -92,6 +93,9 @@ public class LazyAdapter extends BaseAdapter {
         // On cache le texte "en cours" si l'happy hour n'est pas en cours
         if (!bar.isBarHH()) 
         	txtEnCours.setVisibility(View.INVISIBLE);
+        // Gestion du favori
+        if (bar.isBarFavori())
+        	imgFavori.setImageResource(R.drawable.ic_favoris_couleur);
 
         return vi;
     }
