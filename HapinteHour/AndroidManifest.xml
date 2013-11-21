@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mobyere.hapintehour"
     android:versionCode="0"
-    android:versionName="0.51B" >
+    android:versionName="0.52B" >
 
     <uses-sdk
         android:minSdkVersion="8"

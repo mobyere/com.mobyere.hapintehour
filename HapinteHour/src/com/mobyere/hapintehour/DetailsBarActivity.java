@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobyere.hapintehour.dao.FavorisDao;
@@ -55,12 +56,12 @@ public class DetailsBarActivity extends Activity {
 	private TextView txtDimanche;
 	private TextView txtTitreDetail;
 	private TextView txtDetails;
-	private ImageView imgCadreDetails;
 	private Bar bar;
 	private int positionBar;
 	private Intent intent;
 	private FavorisDao favorisDao;
 	private FavorisMetier barFavoris;
+	private RelativeLayout layoutDetails;
 	
 	// Pour le swipe
 	private LayoutInflater inflater;	//Used to create individual pages
@@ -227,7 +228,7 @@ public class DetailsBarActivity extends Activity {
 		    txtDimanche = (TextView) page.findViewById(R.id.txtDimanche);
 		    txtTitreDetail = (TextView) page.findViewById(R.id.txtTitreDetails);
 		    txtDetails = (TextView) page.findViewById(R.id.txtDetails);
-		    imgCadreDetails = (ImageView) page.findViewById(R.id.imgCadreDetailsDetail);
+		    layoutDetails = (RelativeLayout) page.findViewById(R.id.id_relativeDetailsDetail);
 		    
 		    // Alimentation des champs
 		    bar = Utils.getListeBarsHH().get(position);
@@ -360,8 +361,8 @@ public class DetailsBarActivity extends Activity {
 			if (!"NULL".equalsIgnoreCase(bar.getBarDetails())) {
 				txtTitreDetail.setVisibility(View.VISIBLE);
 				txtDetails.setVisibility(View.VISIBLE);
-				imgCadreDetails.setVisibility(View.VISIBLE);
 				txtDetails.setText(bar.getBarDetails());
+				layoutDetails.setVisibility(View.VISIBLE);
 			}
 			
 			//Add the page to the front of the queue
@@ -422,4 +423,5 @@ public class DetailsBarActivity extends Activity {
 	    favorisDao.close();
 	    super.onPause();
 	  }
+
 }

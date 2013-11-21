@@ -236,11 +236,13 @@
 			<!-- Details/Remarques -->
 			<RelativeLayout
 		        android:id="@+id/id_relativeDetailsDetail"
-		        android:layout_width="wrap_content"
+		        android:layout_width="match_parent"
 		    	android:layout_height="wrap_content"
 		    	android:layout_alignParentLeft="true"
 		    	android:layout_below="@id/imgCadreBiereDetail"
-		    	android:layout_marginTop="15dp" >
+		    	android:layout_marginTop="15dp"
+		    	android:background="@drawable/cadre_transparent"
+		    	android:visibility="gone" >
 			    
 			    <TextView
 				    android:id="@+id/txtTitreDetails"
@@ -265,26 +267,16 @@
 				    android:textIsSelectable="true"
 				    android:visibility="gone" />
 				
-				<ImageView
-				    android:id="@+id/imgCadreDetailsDetail"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_alignBottom="@+id/txtDetails"
-				    android:layout_marginLeft="5dp"
-				    android:contentDescription="@string/contentDescription"
-				    android:scaleType="fitXY"
-				    android:src="@drawable/cadre_transparent"
-				    android:visibility="gone" />
-				
 			</RelativeLayout>
 			<!-- Horaires des HH -->
 			<RelativeLayout
 		        android:id="@+id/id_relativeHHDetail"
-		        android:layout_width="wrap_content"
+		        android:layout_width="match_parent"
 		    	android:layout_height="wrap_content"
 		    	android:layout_alignParentLeft="true"
 		    	android:layout_below="@id/id_relativeDetailsDetail"
-		    	android:layout_marginTop="15dp" >
+		    	android:layout_marginTop="15dp"
+		    	android:background="@drawable/cadre_transparent" >
 				
 				<TextView
 				    android:id="@+id/txtHappyHour"
@@ -452,16 +444,6 @@
 				    android:textIsSelectable="true"
 				    android:text="@string/pasDeHH" />
 				
-				<ImageView
-				    android:id="@+id/imgCadreHHDetail"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent"
-				    android:layout_alignBottom="@+id/txtDimanche"
-				    android:layout_alignTop="@id/imgCadreHHDetail"
-				    android:layout_marginLeft="5dp"
-				    android:contentDescription="@string/contentDescription"
-				    android:scaleType="fitXY"
-				    android:src="@drawable/cadre_transparent" />
 			</RelativeLayout>
 	
 		</RelativeLayout>
