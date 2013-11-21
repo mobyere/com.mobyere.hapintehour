@@ -423,5 +423,4 @@ public class DetailsBarActivity extends Activity {
 	    favorisDao.close();
 	    super.onPause();
 	  }
-
 }
