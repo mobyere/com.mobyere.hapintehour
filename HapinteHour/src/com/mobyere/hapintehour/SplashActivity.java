@@ -1,10 +1,6 @@
 package com.mobyere.hapintehour;
 
-import com.mobyere.hapintehour.dao.FavorisDao;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,6 +8,8 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.mobyere.hapintehour.dao.FavorisDao;
 
 public class SplashActivity extends Activity implements LocationListener {
 
@@ -80,10 +78,10 @@ public class SplashActivity extends Activity implements LocationListener {
 	protected void onResume() {
 		super.onResume();
 		// Aucun des deux n'est dispo, on propose de les activer
-		if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
+		/*if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
 				!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			createGpsDisabledAlert();
-		}
+		}*/
 		
 	}
 	
@@ -121,7 +119,7 @@ public class SplashActivity extends Activity implements LocationListener {
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
 	
-	private void createGpsDisabledAlert() {
+	/*private void createGpsDisabledAlert() {
         AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
         localBuilder
             .setMessage("Aucun service de localisation disponible, vous devez en activer un pour utiliser l'application")
@@ -143,5 +141,5 @@ public class SplashActivity extends Activity implements LocationListener {
             }
         );
         localBuilder.create().show();
-    }
+    }*/
 }
