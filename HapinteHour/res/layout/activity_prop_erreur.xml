@@ -42,7 +42,8 @@
         android:layout_alignLeft="@id/etxtNomBarPropErreur"
         android:layout_below="@id/etxtNomBarPropErreur"
    	    android:inputType="phone"
-   	    android:visibility="visible" />
+   	    android:visibility="visible"
+   	    android:maxLength="10" />
 
     <ImageView
    	    android:id="@+id/imgMailPropErreur"

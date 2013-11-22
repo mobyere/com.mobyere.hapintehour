@@ -1,5 +1,7 @@
 package com.mobyere.hapintehour;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -98,7 +100,8 @@ public class PropErreurActivity extends Activity {
 				}
 				// Adresse mail
 				if (controlesOK && txtMailBar.getText().length() > 0) {
-					if (!txtMailBar.getText().toString().matches("[a-9]@s")) {
+					EmailValidator emailValidator  = EmailValidator.getInstance();
+					if (!emailValidator.isValid(txtMailBar.getText().toString())) {
 						controlesOK = false;
 						Toast.makeText(PropErreurActivity.this, "Le mail saisi n'est pas correct", 
 								Toast.LENGTH_SHORT).show();

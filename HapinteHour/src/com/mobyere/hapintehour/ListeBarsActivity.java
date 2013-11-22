@@ -45,6 +45,7 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 		listViewBars = (ListView) findViewById(R.id.listBarsHH);
 		txtListeVide = (TextView) findViewById(R.id.txtListeVide);
 		    	
+		// Gestion de la géolocalisation
 		locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 		provider = LocationManager.NETWORK_PROVIDER;
 		location = locationManager.getLastKnownLocation(provider);
@@ -111,7 +112,7 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    				Utils.getListeBarsHH().add(bar);
 	    		}
 	    		// Affichage d'un toast indiquant ce qu'on affiche
-	    		Toast.makeText(ListeBarsActivity.this, "Liste des bars en Happy Hour", Toast.LENGTH_SHORT).show();
+	    		Toast.makeText(ListeBarsActivity.this, "Liste des bars en Happy Hour en cours ou à venir", Toast.LENGTH_SHORT).show();
 	    	}
 	    	// On reconstruit la vue
 	    	if (Utils.getListeBarsHH().isEmpty()) {
@@ -130,81 +131,8 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    			new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int item) {
-					switch(item) {
-					// Tri par prix (valeur par défaut)
-					case 0:
-						Utils.setItemTriSelectionne(0);
-						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
-							@Override
-							public int compare(Bar bar1, Bar bar2) {
-								return bar1.getBarPrixBiereActuel().compareTo(
-										bar2.getBarPrixBiereActuel());
-							}
-						});
-						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
-							@Override
-							public int compare(Bar bar1, Bar bar2) {
-								return bar1.getBarPrixBiereActuel().compareTo(
-										bar2.getBarPrixBiereActuel());
-							}
-						});
-						// On reconstruit la vue
-						adapter = new LazyAdapter(ListeBarsActivity.this, 
-								Utils.getListeBarsHH());
-				        listViewBars.setAdapter(adapter);
-						break;
-					// Tri par distance
-					case 1:
-						Utils.setItemTriSelectionne(1);
-						Collections.sort(Utils.getListeBarsHH(), new BarComparator());
-						Collections.sort(Utils.getListeTousBars(), new BarComparator());
-						// On reconstruit la vue
-						adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
-				        listViewBars.setAdapter(adapter);
-						break;
-					// Tri par horaire
-					case 2:
-						Utils.setItemTriSelectionne(2);
-						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
-							@Override
-							public int compare(Bar bar1, Bar bar2) {
-								return bar1.getBarHeureDebutHH().compareTo(bar2.getBarHeureDebutHH());
-							}
-						});
-						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
-							@Override
-							public int compare(Bar bar1, Bar bar2) {
-								return bar1.getBarHeureDebutHH().compareTo(bar2.getBarHeureDebutHH());
-							}
-						});
-						// On reconstruit la vue
-						adapter = new LazyAdapter(ListeBarsActivity.this, 
-								Utils.getListeBarsHH());
-				        listViewBars.setAdapter(adapter);
-						break;
-					// Tri par favoris
-					case 3:
-						Utils.setItemTriSelectionne(3);
-						Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
-							@Override
-							public int compare(Bar bar1, Bar bar2) {
-								return Boolean.valueOf(bar2.isBarFavori()).compareTo(
-										Boolean.valueOf(bar1.isBarFavori()));
-							}
-						});
-						Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
-							@Override
-							public int compare(Bar bar1, Bar bar2) {
-								return Boolean.valueOf(bar2.isBarFavori()).compareTo(
-										Boolean.valueOf(bar1.isBarFavori()));
-							}
-						});
-						// On reconstruit la vue
-						adapter = new LazyAdapter(ListeBarsActivity.this, 
-								Utils.getListeBarsHH());
-				        listViewBars.setAdapter(adapter);
-						break;
-					}
+					// Appel fonction tri
+					triListe(item);
 					dialogueTri.dismiss();
 				}
 			});
@@ -238,18 +166,20 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	    }
 	    return true;
 	} 
-	
-	
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Aucun des deux n'est dispo, on propose de les activer
-		if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
+		// Aucune location n'est dispo, on propose de les activer (seulement la première fois)
+		if (!Utils.isEcranDejaAppele() &&
+				!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
 				!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			Utils.setEcranDejaAppele(true);
 			createGpsDisabledAlert();
 		}
+		// On refait le tri pour être sûr d'être à jour
 		adapter.notifyDataSetChanged();
+		triListe(Utils.getItemTriSelectionne());
 		listViewBars.setAdapter(adapter);
 	}
 	
@@ -293,9 +223,10 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 	private void createGpsDisabledAlert() {
         AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
         localBuilder
-            .setMessage("Aucun service de localisation disponible, vous devez en activer un pour utiliser l'application")
+            .setMessage("Aucun service de localisation disponible. \nIl est préférable de les activer pour profiter " +
+            				"de toutes les fonctionnalités de l'application")
             .setCancelable(false)
-            .setPositiveButton("Activer ",
+            .setPositiveButton("Activer la localisation ",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     	startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
@@ -303,11 +234,10 @@ public class ListeBarsActivity extends Activity implements LocationListener {
                     }
                 }
             );
-        localBuilder.setNegativeButton("Quitter ",
+        localBuilder.setNegativeButton("Continuer sans localisation ",
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                     paramDialogInterface.cancel();
-                    finish();
                 }
             }
         );
@@ -322,7 +252,6 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressDialog = new ProgressDialog(ListeBarsActivity.this);
-			//progressDialog.setTitle("Rafra...");
 			progressDialog.setMessage("Veuillez patienter...");
 			progressDialog.setCancelable(false);
 			progressDialog.setIndeterminate(true);
@@ -357,10 +286,88 @@ public class ListeBarsActivity extends Activity implements LocationListener {
 				if (Utils.getListeBarsHH().isEmpty()) {
 					txtListeVide.setVisibility(View.VISIBLE);
 				} else {
-					adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
-			        listViewBars.setAdapter(adapter);
+					// Appel fonction tri
+					triListe(Utils.getItemTriSelectionne());
 				}
 			}
+		}
+	}
+	
+	private void triListe(int item) {
+		switch(item) {
+		// Tri par prix (valeur par défaut)
+		case 0:
+			Utils.setItemTriSelectionne(0);
+			Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+				@Override
+				public int compare(Bar bar1, Bar bar2) {
+					return bar1.getBarPrixBiereActuel().compareTo(
+							bar2.getBarPrixBiereActuel());
+				}
+			});
+			Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
+				@Override
+				public int compare(Bar bar1, Bar bar2) {
+					return bar1.getBarPrixBiereActuel().compareTo(
+							bar2.getBarPrixBiereActuel());
+				}
+			});
+			// On reconstruit la vue
+			adapter = new LazyAdapter(ListeBarsActivity.this, 
+					Utils.getListeBarsHH());
+	        listViewBars.setAdapter(adapter);
+			break;
+		// Tri par distance
+		case 1:
+			Utils.setItemTriSelectionne(1);
+			Collections.sort(Utils.getListeBarsHH(), new BarComparator());
+			Collections.sort(Utils.getListeTousBars(), new BarComparator());
+			// On reconstruit la vue
+			adapter = new LazyAdapter(ListeBarsActivity.this, Utils.getListeBarsHH());
+	        listViewBars.setAdapter(adapter);
+			break;
+		// Tri par horaire
+		case 2:
+			Utils.setItemTriSelectionne(2);
+			Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+				@Override
+				public int compare(Bar bar1, Bar bar2) {
+					return bar1.getBarHeureDebutHH().compareTo(bar2.getBarHeureDebutHH());
+				}
+			});
+			Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
+				@Override
+				public int compare(Bar bar1, Bar bar2) {
+					return bar1.getBarHeureDebutHH().compareTo(bar2.getBarHeureDebutHH());
+				}
+			});
+			// On reconstruit la vue
+			adapter = new LazyAdapter(ListeBarsActivity.this, 
+					Utils.getListeBarsHH());
+	        listViewBars.setAdapter(adapter);
+			break;
+		// Tri par favoris
+		case 3:
+			Utils.setItemTriSelectionne(3);
+			Collections.sort(Utils.getListeBarsHH(), new Comparator<Bar>() {
+				@Override
+				public int compare(Bar bar1, Bar bar2) {
+					return Boolean.valueOf(bar2.isBarFavori()).compareTo(
+							Boolean.valueOf(bar1.isBarFavori()));
+				}
+			});
+			Collections.sort(Utils.getListeTousBars(), new Comparator<Bar>() {
+				@Override
+				public int compare(Bar bar1, Bar bar2) {
+					return Boolean.valueOf(bar2.isBarFavori()).compareTo(
+							Boolean.valueOf(bar1.isBarFavori()));
+				}
+			});
+			// On reconstruit la vue
+			adapter = new LazyAdapter(ListeBarsActivity.this, 
+					Utils.getListeBarsHH());
+	        listViewBars.setAdapter(adapter);
+			break;
 		}
 	}
 		

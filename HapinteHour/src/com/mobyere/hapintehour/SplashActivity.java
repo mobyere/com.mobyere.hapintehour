@@ -75,17 +75,6 @@ public class SplashActivity extends Activity implements LocationListener {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		// Aucun des deux n'est dispo, on propose de les activer
-		/*if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && 
-				!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			createGpsDisabledAlert();
-		}*/
-		
-	}
-	
-	@Override
 	protected void onPause() {
 		super.onPause();
 		locationManager.removeUpdates(this);
@@ -119,27 +108,4 @@ public class SplashActivity extends Activity implements LocationListener {
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
 	
-	/*private void createGpsDisabledAlert() {
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-        localBuilder
-            .setMessage("Aucun service de localisation disponible, vous devez en activer un pour utiliser l'application")
-            .setCancelable(false)
-            .setPositiveButton("Activer ",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    	startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-                        finish();
-                    }
-                }
-            );
-        localBuilder.setNegativeButton("Quitter ",
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    paramDialogInterface.cancel();
-                    finish();
-                }
-            }
-        );
-        localBuilder.create().show();
-    }*/
 }

@@ -10,8 +10,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -27,14 +25,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mobyere.hapintehour.dao.FavorisDao;
-import com.mobyere.hapintehour.dao.FavorisMetier;
-
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
+
+import com.mobyere.hapintehour.dao.FavorisDao;
+import com.mobyere.hapintehour.dao.FavorisMetier;
  
 public class Utils {
 	
@@ -48,6 +46,7 @@ public class Utils {
 	private static final String ACTIVITY_DETAILS_BAR = "detailsBar";
 	private static boolean onlyHH = true; // si vrai, on n'affiche que les bars en HH
 	private static int itemTriSelectionne = 0; // parametre de tri
+	private static boolean ecranDejaAppele = false; // C'est moche mais j'ai pas trouvé de moyens automatiques de le faire
     
     public static void CopyStream(InputStream is, OutputStream os)
     {
@@ -302,22 +301,6 @@ public class Utils {
 	    	ACRA.getErrorReporter().handleException(e);
 	    	e.printStackTrace();
 	    }
-        // Tri des bars par prix par défaut
-        Collections.sort(listeTousBars, new Comparator<Bar>() {
-			@Override
-			public int compare(Bar bar1, Bar bar2) {
-				return bar1.getBarPrixBiereActuel().compareTo(
-						bar2.getBarPrixBiereActuel());
-			}
-		});
-        Collections.sort(listeBarsHH, new Comparator<Bar>() {
-			@Override
-			public int compare(Bar bar1, Bar bar2) {
-				return bar1.getBarPrixBiereActuel().compareTo(
-						bar2.getBarPrixBiereActuel());
-			}
-		});
-        //return null;
 	}
 
 	// GETTERS - SETTERS
@@ -371,6 +354,14 @@ public class Utils {
 
 	public static void setItemTriSelectionne(int itemTriSelectionne) {
 		Utils.itemTriSelectionne = itemTriSelectionne;
+	}
+
+	public static boolean isEcranDejaAppele() {
+		return ecranDejaAppele;
+	}
+
+	public static void setEcranDejaAppele(boolean ecranDejaAppele) {
+		Utils.ecranDejaAppele = ecranDejaAppele;
 	}
 
 }
